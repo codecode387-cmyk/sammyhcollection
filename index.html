@@ -3,7 +3,19 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>SammyH Collections — Style • Quality • You</title>
+<title>SammyH Collections | Premium Ladies Heels, Men Shoes & Bags in Lagos</title>
+<meta name="description" content="Shop the finest collection of ladies heels, men shoes, sneakers, and luxury bags at SammyH Collections. Nationwide delivery from our store in Iyana-Ipaja, Lagos."/>
+<meta name="keywords" content="lady shoes, ladies heels, men shoes, men sneakers, luxury bags, Lagos shoe store, SammyH Collections, Nigerian fashion, buy shoes online Nigeria"/>
+<meta name="author" content="SammyH Collections"/>
+
+<!-- Open Graph / WhatsApp Sharing -->
+<meta property="og:title" content="SammyH Collections | Style • Quality • You"/>
+<meta property="og:description" content="Premium ladies heels, men shoes, and luxury bags. Shop online for nationwide delivery."/>
+<meta property="og:image" content="./logo.png"/>
+<meta property="og:url" content="https://sammyhcollections.com"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+
 <link rel="icon" type="image/png" href="./favicon.png"/>
 <link rel="apple-touch-icon" href="./logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -28,10 +40,6 @@ tailwind.config = {
   .fade-in { animation: fade .35s ease both; }
   @keyframes fade { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
   .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  
-  /* Hide scrollbar for gallery */
-  .hide-scroll::-webkit-scrollbar { display: none; }
-  .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 </head>
 <body class="bg-cream font-body text-ink antialiased">
@@ -44,22 +52,30 @@ tailwind.config = {
   </div>
 
   <!-- ============ HEADER ============ -->
-  <header class="w-full bg-cream/95 backdrop-blur-md border-b border-black/5">
+  <header class="w-full bg-cream/95 backdrop-blur-md border-b border-black/5 relative">
     <div class="max-w-7xl mx-auto h-16 md:h-20 px-3 md:px-6 flex items-center justify-between gap-2">
-      <a href="#" onclick="showPage('home')" class="flex items-center gap-2 shrink-0">
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobileMenuBtn" class="md:hidden p-2 -ml-2 rounded-full hover:bg-sand">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+
+      <a href="#" onclick="showPage('home')" class="flex items-center gap-2 shrink-0 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
         <img src="./logo.png" alt="SammyH Collections" class="h-10 md:h-12 w-auto object-contain"/>
         <span class="hidden sm:inline font-display text-xl md:text-2xl tracking-tight">SammyH</span>
       </a>
 
+      <!-- Desktop Nav -->
       <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-[11px] tracking-[0.15em] uppercase">
         <a href="#" onclick="showPage('home')" class="hover:text-gold transition">Shop</a>
+        <a href="#" onclick="showPage('blog')" class="hover:text-gold transition">Blog</a>
         <a href="#categories" onclick="showPage('home')" class="hover:text-gold transition">Categories</a>
         <a href="#about" onclick="showPage('home')" class="hover:text-gold transition">About</a>
         <a href="#contact" onclick="showPage('home')" class="hover:text-gold transition">Contact</a>
       </nav>
 
-      <div class="flex items-center gap-1 sm:gap-2">
-        <button id="searchToggle" class="md:hidden p-2 rounded-full hover:bg-sand" aria-label="Search">
+      <div class="flex items-center gap-1 sm:gap-2 ml-auto md:ml-0">
+        <button id="searchToggle" class="md:hidden p-2 rounded-full hover:bg-sand">
           <span class="material-symbols-outlined">search</span>
         </button>
         <div class="relative hidden md:flex items-center">
@@ -73,7 +89,8 @@ tailwind.config = {
       </div>
     </div>
 
-    <div id="searchMobileWrap" class="md:hidden hidden px-3 pb-3">
+    <!-- Mobile Search Drawer -->
+    <div id="searchMobileWrap" class="md:hidden hidden px-3 pb-3 border-b border-black/5 bg-cream">
       <div class="relative flex items-center">
         <span class="material-symbols-outlined absolute left-3 text-muted text-[18px] pointer-events-none">search</span>
         <input id="searchMobile" type="text" placeholder="Search products..." class="w-full bg-sand text-sm pl-9 pr-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-gold"/>
@@ -81,6 +98,22 @@ tailwind.config = {
     </div>
   </header>
 </div>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden"></div>
+<aside id="mobileMenu" class="fixed top-0 left-0 h-full w-[280px] bg-cream z-[70] -translate-x-full transition-transform duration-300 flex flex-col p-6">
+  <div class="flex justify-between items-center mb-8">
+    <img src="./logo.png" alt="Logo" class="h-10"/>
+    <button id="closeMobileMenu" class="p-2 rounded-full hover:bg-sand"><span class="material-symbols-outlined">close</span></button>
+  </div>
+  <nav class="flex flex-col gap-4 text-sm font-semibold tracking-wider uppercase">
+    <a href="#" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">Shop</a>
+    <a href="#" onclick="showPage('blog'); closeMobileMenu();" class="hover:text-gold transition">Blog</a>
+    <a href="#categories" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">Categories</a>
+    <a href="#about" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">About</a>
+    <a href="#contact" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">Contact</a>
+  </nav>
+</aside>
 
 <!-- ============ MAIN CONTENT ============ -->
 <main class="pt-28 md:pt-32 min-h-screen">
@@ -90,26 +123,24 @@ tailwind.config = {
     <!-- HERO SECTION -->
     <section class="px-3 md:px-6 py-6 md:py-10">
       <div class="max-w-7xl mx-auto relative rounded-2xl overflow-hidden min-h-[450px] md:min-h-[600px] flex items-center justify-center">
-        <!-- Background Image -->
-        <img src="./hero.jpg" alt="SammyH Hero" class="absolute inset-0 w-full h-full object-cover"/>
-        <!-- Dark Overlay for Text Readability -->
+        <img src="./hero.jpg" alt="Premium Shoes and Bags" class="absolute inset-0 w-full h-full object-cover"/>
         <div class="absolute inset-0 bg-black/40"></div>
         
-        <!-- Hero Text -->
         <div class="relative z-10 text-center px-4 max-w-3xl fade-in">
           <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full mb-4 text-[10px] tracking-[0.15em] uppercase text-white font-semibold border border-white/30">
             New Drop · Style • Quality • You
           </span>
+          <!-- Corrected Hero Copy -->
           <h1 class="font-display text-4xl sm:text-5xl md:text-7xl text-white leading-[1.05] tracking-tight mb-4 drop-shadow-lg">
-            Sculpted for Movement.<br/>
-            <span class="text-goldsoft italic font-normal">Built for Tomorrow.</span>
+            Premium Footwear.<br/>
+            <span class="text-goldsoft italic font-normal">Curated For You.</span>
           </h1>
           <p class="text-white/90 text-sm md:text-lg max-w-xl mx-auto mb-8 drop-shadow-md">
-            Handcrafted luxury footwear, bags and accessories — engineered for effortless versatility and enduring comfort.
+            Discover our exclusive collection of ladies heels, men's shoes, bags, and accessories. Sourced with care, delivered nationwide.
           </p>
           <div class="flex flex-wrap justify-center gap-3">
             <a href="#shop" class="bg-white text-ink text-[11px] tracking-[0.15em] uppercase px-8 py-3.5 rounded hover:bg-gold hover:text-white transition flex items-center gap-2 font-semibold">
-              Explore Collection
+              Shop the Collection
               <span class="material-symbols-outlined text-base">arrow_forward</span>
             </a>
           </div>
@@ -130,6 +161,7 @@ tailwind.config = {
           <button data-cat="shoes" class="cat-card group bg-sand hover:bg-black hover:text-white transition p-5 rounded-xl text-left">
             <span class="material-symbols-outlined text-3xl mb-2 text-gold group-hover:text-goldsoft">steps</span>
             <h3 class="font-semibold uppercase tracking-wide text-sm">Shoes</h3>
+            <p class="text-[10px] opacity-70 mt-1">Heels & Men's</p>
           </button>
           <button data-cat="bags" class="cat-card group bg-sand hover:bg-black hover:text-white transition p-5 rounded-xl text-left">
             <span class="material-symbols-outlined text-3xl mb-2 text-gold group-hover:text-goldsoft">shopping_bag</span>
@@ -157,11 +189,8 @@ tailwind.config = {
           </div>
           <div id="activeFilter" class="text-xs text-muted hidden">Filtering: <span class="font-semibold text-ink capitalize"></span></div>
         </div>
-
-        <div id="productGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-          <!-- JS injects products here -->
-        </div>
-
+        <div id="productGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"></div>
+        
         <!-- PAGINATION -->
         <div id="pagination" class="flex items-center justify-center gap-2 mt-10 hidden">
           <button id="prevPage" class="p-3 rounded-full bg-sand hover:bg-ink hover:text-white transition disabled:opacity-30 disabled:cursor-not-allowed">
@@ -181,19 +210,19 @@ tailwind.config = {
         <div class="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <span class="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold">Our Promise</span>
-            <h2 class="font-display text-3xl md:text-4xl mt-2 mb-4 leading-tight">Engineered for All-Day Balance</h2>
+            <h2 class="font-display text-3xl md:text-4xl mt-2 mb-4 leading-tight">Quality You Can Trust</h2>
             <p class="text-white/70 text-sm md:text-base leading-relaxed mb-6">
-              Every piece from SammyH Collections is mathematically weighed to balance structural stability with featherweight comfort. Built alongside third-generation artisans, using traceable Italian leathers and bio-circulated cushioning.
+              We carefully curate every piece in our collection. From elegant ladies' heels to durable men's shoes and luxury bags, we ensure you get the best quality for your style.
             </p>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-white/5 rounded-lg p-4">
-              <span class="material-symbols-outlined text-gold text-2xl mb-2">architecture</span>
-              <h4 class="font-semibold text-sm mb-1">Artisan Craft</h4>
+              <span class="material-symbols-outlined text-gold text-2xl mb-2">verified</span>
+              <h4 class="font-semibold text-sm mb-1">Premium Quality</h4>
             </div>
             <div class="bg-white/5 rounded-lg p-4">
-              <span class="material-symbols-outlined text-gold text-2xl mb-2">eco</span>
-              <h4 class="font-semibold text-sm mb-1">Sustainable</h4>
+              <span class="material-symbols-outlined text-gold text-2xl mb-2">local_shipping</span>
+              <h4 class="font-semibold text-sm mb-1">Fast Delivery</h4>
             </div>
           </div>
         </div>
@@ -216,16 +245,21 @@ tailwind.config = {
           <span class="material-symbols-outlined text-gold text-3xl mb-3">share</span>
           <h4 class="font-semibold uppercase tracking-wide text-sm mb-2">Follow Us</h4>
           <div class="flex flex-col gap-2">
-            <a href="https://www.instagram.com/sammyhcollections" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2">
-              <span class="material-symbols-outlined text-base">photo_camera</span> Instagram
-            </a>
-            <a href="https://www.facebook.com/obu.sammy.5" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2">
-              <span class="material-symbols-outlined text-base">public</span> Facebook
-            </a>
+            <a href="https://www.instagram.com/sammyhcollections" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2"><span class="material-symbols-outlined text-base">photo_camera</span> Instagram</a>
+            <a href="https://www.facebook.com/obu.sammy.5" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2"><span class="material-symbols-outlined text-base">public</span> Facebook</a>
           </div>
         </div>
       </div>
     </section>
+  </div>
+
+  <!-- ================= BLOG PAGE ================= -->
+  <div id="page-blog" class="hidden px-3 md:px-6 py-6 max-w-4xl mx-auto">
+    <h1 class="font-display text-4xl mb-2 text-center">The Journal</h1>
+    <p class="text-center text-muted mb-10">Style tips, new arrivals, and more from SammyH Collections.</p>
+    <div id="blogList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Blogs injected via JS -->
+    </div>
   </div>
 
   <!-- ================= PRODUCT DETAIL PAGE ================= -->
@@ -233,33 +267,21 @@ tailwind.config = {
     <button onclick="showPage('home')" class="mb-6 flex items-center gap-2 text-sm text-muted hover:text-ink transition">
       <span class="material-symbols-outlined text-base">arrow_back</span> Back to Shop
     </button>
-
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-      <!-- Image Gallery -->
       <div class="space-y-4">
         <div class="aspect-square bg-sand rounded-2xl overflow-hidden border border-black/5">
           <img id="detailMainImg" src="" alt="Product Image" class="w-full h-full object-cover"/>
         </div>
-        <div id="detailThumbs" class="grid grid-cols-5 gap-2">
-          <!-- Thumbnails injected here -->
-        </div>
+        <div id="detailThumbs" class="grid grid-cols-5 gap-2"></div>
       </div>
-
-      <!-- Product Info -->
       <div class="flex flex-col">
         <span id="detailCategory" class="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold mb-2"></span>
         <h1 id="detailName" class="font-display text-3xl md:text-5xl mb-4 leading-tight"></h1>
         <p id="detailPrice" class="font-display text-2xl md:text-3xl text-muted mb-6"></p>
-        
-        <div class="prose prose-sm text-muted mb-8 leading-relaxed">
-          <p id="detailDesc"></p>
-        </div>
-
+        <div class="prose prose-sm text-muted mb-8 leading-relaxed"><p id="detailDesc"></p></div>
         <button id="detailAddBtn" class="w-full bg-ink text-white text-[11px] tracking-[0.15em] uppercase py-4 rounded-xl hover:bg-gold transition font-semibold flex items-center justify-center gap-2 mb-4">
-          <span class="material-symbols-outlined text-base">shopping_bag</span>
-          Add to Bag
+          <span class="material-symbols-outlined text-base">shopping_bag</span> Add to Bag
         </button>
-
         <div class="border-t border-black/10 pt-6 space-y-3 text-sm text-muted">
           <p class="flex items-center gap-2"><span class="material-symbols-outlined text-gold text-base">local_shipping</span> Fast nationwide delivery</p>
           <p class="flex items-center gap-2"><span class="material-symbols-outlined text-gold text-base">verified</span> 100% authentic guarantee</p>
@@ -295,9 +317,7 @@ tailwind.config = {
       <span class="text-muted">Subtotal</span>
       <span id="cartSubtotal" class="font-semibold text-lg">₦0</span>
     </div>
-    <button id="checkoutBtn" class="w-full bg-ink text-white text-[11px] tracking-[0.15em] uppercase py-4 rounded hover:bg-gold transition">
-      Checkout via WhatsApp
-    </button>
+    <button id="checkoutBtn" class="w-full bg-ink text-white text-[11px] tracking-[0.15em] uppercase py-4 rounded hover:bg-gold transition">Checkout via WhatsApp</button>
   </div>
 </aside>
 
@@ -328,34 +348,25 @@ tailwind.config = {
         </div>
       </div>
       <button type="submit" class="w-full bg-[#25D366] text-white text-[11px] tracking-[0.15em] uppercase py-4 rounded hover:bg-[#1ebe5b] transition font-semibold flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined text-base">chat</span>
-        Send Order via WhatsApp
+        <span class="material-symbols-outlined text-base">chat</span> Send Order via WhatsApp
       </button>
     </form>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-ink text-white text-sm px-4 py-2.5 rounded-lg opacity-0 pointer-events-none transition-opacity z-[100]"></div>
 
 <script src="./supabase-config.js"></script>
 <script>
-/* =========================================================
-   STATE
-========================================================= */
 let allProducts = [];
 let filteredProducts = [];
 let activeCategory = "all";
 let cart = JSON.parse(localStorage.getItem("sammyh_cart") || "[]");
 const WHATSAPP_NUMBER = "2347039898580";
-
-// Pagination State
 let currentPage = 1;
 const itemsPerPage = 30;
 
-// Format to Naira
 const money = (n) => "₦" + Number(n || 0).toLocaleString("en-NG");
-
 const $ = (s) => document.querySelector(s);
 const grid = $("#productGrid");
 const cartDrawer = $("#cartDrawer");
@@ -368,9 +379,6 @@ const checkoutForm = $("#checkoutForm");
 const toastEl = $("#toast");
 const pagination = $("#pagination");
 
-/* =========================================================
-   HELPERS
-========================================================= */
 function toast(msg) {
   toastEl.textContent = msg;
   toastEl.style.opacity = "1";
@@ -388,19 +396,76 @@ function escapeHtml(str = "") {
 }
 
 /* =========================================================
+   ANALYTICS TRACKING
+========================================================= */
+async function trackEvent(type, page = 'home') {
+  if (!window.db) return;
+  try {
+    await window.db.from('analytics').insert([{ event_type: type, page: page }]);
+  } catch (e) {
+    console.warn("Analytics failed", e);
+  }
+}
+
+/* =========================================================
    PAGE NAVIGATION
 ========================================================= */
 function showPage(page, productId = null) {
+  $("#page-home").classList.add("hidden");
+  $("#page-product").classList.add("hidden");
+  $("#page-blog").classList.add("hidden");
+
   if (page === 'home') {
     $("#page-home").classList.remove("hidden");
-    $("#page-product").classList.add("hidden");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    trackEvent('visit', 'home');
   } else if (page === 'product') {
-    $("#page-home").classList.add("hidden");
     $("#page-product").classList.remove("hidden");
-    window.scrollTo({ top: 0, behavior: "smooth" });
     loadProductDetail(productId);
+    trackEvent('product_view', productId);
+  } else if (page === 'blog') {
+    $("#page-blog").classList.remove("hidden");
+    loadBlogs();
+    trackEvent('visit', 'blog');
   }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function closeMobileMenu() {
+  $("#mobileMenu").classList.add("-translate-x-full");
+  $("#mobileMenuOverlay").classList.add("hidden");
+}
+
+$("#mobileMenuBtn").addEventListener("click", () => {
+  $("#mobileMenu").classList.remove("-translate-x-full");
+  $("#mobileMenuOverlay").classList.remove("hidden");
+});
+$("#closeMobileMenu").addEventListener("click", closeMobileMenu);
+$("#mobileMenuOverlay").addEventListener("click", closeMobileMenu);
+
+/* =========================================================
+   BLOGS
+========================================================= */
+async function loadBlogs() {
+  const list = $("#blogList");
+  list.innerHTML = `<div class="col-span-full text-center py-10 text-muted"><span class="material-symbols-outlined animate-spin text-3xl">progress_activity</span></div>`;
+  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
+  
+  const { data, error } = await window.db.from("blogs").select("*").order("created_at", { ascending: false });
+  if (error || !data.length) {
+    list.innerHTML = `<p class="text-center text-muted py-10 col-span-full">No blog posts yet. Check back soon!</p>`;
+    return;
+  }
+  
+  list.innerHTML = data.map(b => `
+    <article class="bg-white rounded-xl overflow-hidden border border-black/5 shadow-sm hover:shadow-lg transition">
+      ${b.image_url ? `<img src="${b.image_url}" class="w-full h-48 object-cover"/>` : ''}
+      <div class="p-5">
+        <p class="text-[10px] tracking-[0.15em] uppercase text-gold font-semibold mb-2">${new Date(b.created_at).toLocaleDateString('en-NG', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+        <h2 class="font-display text-xl mb-2 leading-tight">${escapeHtml(b.title)}</h2>
+        <p class="text-sm text-muted line-clamp-3 mb-4">${escapeHtml(b.content)}</p>
+      </div>
+    </article>
+  `).join("");
 }
 
 /* =========================================================
@@ -409,11 +474,7 @@ function showPage(page, productId = null) {
 async function loadProducts() {
   await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
   const { data, error } = await window.db.from("products").select("*").order("created_at", { ascending: false });
-
-  if (error) {
-    grid.innerHTML = `<div class="col-span-full text-center py-16 text-muted text-sm">Could not load products. ${error.message}</div>`;
-    return;
-  }
+  if (error) return grid.innerHTML = `<div class="col-span-full text-center py-16 text-muted text-sm">Could not load products. ${error.message}</div>`;
   allProducts = data || [];
   applyFilterAndSearch();
 }
@@ -425,8 +486,7 @@ function applyFilterAndSearch() {
     const matchQ = !q || p.name?.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q);
     return matchCat && matchQ;
   });
-  
-  currentPage = 1; // Reset to page 1 on new search
+  currentPage = 1;
   renderProducts();
   
   const af = $("#activeFilter");
@@ -445,7 +505,6 @@ function renderProducts() {
     return;
   }
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
@@ -467,7 +526,6 @@ function renderProducts() {
     </article>`;
   }).join("");
 
-  // Update Pagination UI
   if (totalPages > 1) {
     pagination.classList.remove("hidden");
     $("#pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
@@ -478,9 +536,6 @@ function renderProducts() {
   }
 }
 
-/* =========================================================
-   PRODUCT DETAIL PAGE
-========================================================= */
 function loadProductDetail(id) {
   const p = allProducts.find(x => x.id === id);
   if (!p) return;
@@ -490,17 +545,15 @@ function loadProductDetail(id) {
   $("#detailPrice").textContent = money(p.price);
   $("#detailDesc").textContent = p.description || "No description available.";
 
-  // Handle Images
   const images = (p.images && p.images.length > 0) ? p.images : ["https://via.placeholder.com/600x600?text=No+Image"];
   $("#detailMainImg").src = images[0];
 
-  $("#detailThumbs").innerHTML = images.map((img, i) => `
+  $("#detailThumbs").innerHTML = images.map((img) => `
     <button onclick="document.getElementById('detailMainImg').src='${img}'" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-gold transition">
       <img src="${img}" class="w-full h-full object-cover"/>
     </button>
   `).join("");
 
-  // Add to Bag Button logic
   const btn = $("#detailAddBtn");
   btn.onclick = () => {
     if (p.in_stock === false) return toast("This product is sold out.");
@@ -515,14 +568,8 @@ function loadProductDetail(id) {
   }
 }
 
-// Pagination Buttons
-$("#prevPage").addEventListener("click", () => {
-  if (currentPage > 1) { currentPage--; renderProducts(); window.scrollTo({top: 400, behavior: 'smooth'}); }
-});
-$("#nextPage").addEventListener("click", () => {
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  if (currentPage < totalPages) { currentPage++; renderProducts(); window.scrollTo({top: 400, behavior: 'smooth'}); }
-});
+$("#prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderProducts(); } });
+$("#nextPage").addEventListener("click", () => { if (currentPage < Math.ceil(filteredProducts.length / itemsPerPage)) { currentPage++; renderProducts(); } });
 
 /* =========================================================
    CART & CHECKOUT
@@ -540,17 +587,12 @@ function addToCart(id) {
   toast(`${product.name} added to bag`);
 }
 
-function removeFromCart(id) {
-  cart = cart.filter((c) => c.id !== id);
-  saveCart();
-}
-
+function removeFromCart(id) { cart = cart.filter((c) => c.id !== id); saveCart(); }
 function changeQty(id, delta) {
   const item = cart.find((c) => c.id === id);
   if (!item) return;
   item.qty += delta;
-  if (item.qty <= 0) removeFromCart(id);
-  else saveCart();
+  if (item.qty <= 0) removeFromCart(id); else saveCart();
 }
 
 function renderCart() {
@@ -587,15 +629,8 @@ function renderCart() {
   cartItemsEl.querySelectorAll(".rm-btn").forEach((b) => b.addEventListener("click", () => removeFromCart(b.dataset.id)));
 }
 
-// UI Wiring
-$("#cartBtn").addEventListener("click", () => {
-  cartDrawer.classList.remove("translate-x-full");
-  cartOverlay.classList.remove("hidden");
-});
-function closeCart() {
-  cartDrawer.classList.add("translate-x-full");
-  cartOverlay.classList.add("hidden");
-}
+$("#cartBtn").addEventListener("click", () => { cartDrawer.classList.remove("translate-x-full"); cartOverlay.classList.remove("hidden"); });
+function closeCart() { cartDrawer.classList.add("translate-x-full"); cartOverlay.classList.add("hidden"); }
 $("#cartClose").addEventListener("click", closeCart);
 cartOverlay.addEventListener("click", closeCart);
 
@@ -617,9 +652,7 @@ checkoutForm.addEventListener("submit", (e) => {
   msg += `*Phone:* ${fd.get("phone")}\n`;
   msg += `*Address:* ${fd.get("address")}\n\n`;
   msg += `*Items:*\n`;
-  cart.forEach((c, i) => {
-    msg += `${i + 1}. ${c.name} × ${c.qty} — ${money(c.price * c.qty)}\n`;
-  });
+  cart.forEach((c, i) => { msg += `${i + 1}. ${c.name} × ${c.qty} — ${money(c.price * c.qty)}\n`; });
   msg += `\n*Subtotal:* ${money(total)}\n\n`;
   msg += `Please confirm delivery details. Thank you!`;
 
@@ -631,7 +664,6 @@ checkoutForm.addEventListener("submit", (e) => {
   toast("Order opened in WhatsApp — please send!");
 });
 
-// Search
 $("#searchToggle").addEventListener("click", () => {
   $("#searchMobileWrap").classList.toggle("hidden");
   if (!$("#searchMobileWrap").classList.contains("hidden")) $("#searchMobile").focus();
@@ -645,7 +677,6 @@ let searchTimer;
   });
 });
 
-// Category Filter
 document.querySelectorAll(".cat-card").forEach((btn) => {
   btn.addEventListener("click", () => {
     activeCategory = btn.dataset.cat;
@@ -659,6 +690,7 @@ document.querySelectorAll(".cat-card").forEach((btn) => {
 $("#year").textContent = new Date().getFullYear();
 renderCart();
 loadProducts();
+trackEvent('visit', 'home'); // Initial page load tracking
 </script>
 </body>
 </html>
