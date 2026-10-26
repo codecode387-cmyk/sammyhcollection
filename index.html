@@ -8,7 +8,6 @@
 <meta name="keywords" content="lady shoes, ladies heels, men shoes, men sneakers, luxury bags, Lagos shoe store, SammyH Collections, Nigerian fashion, buy shoes online Nigeria"/>
 <meta name="author" content="SammyH Collections"/>
 
-<!-- Open Graph / WhatsApp Sharing -->
 <meta property="og:title" content="SammyH Collections | Style • Quality • You"/>
 <meta property="og:description" content="Premium ladies heels, men shoes, and luxury bags. Shop online for nationwide delivery."/>
 <meta property="og:image" content="./logo.png"/>
@@ -40,9 +39,9 @@ tailwind.config = {
   .fade-in { animation: fade .35s ease both; }
   @keyframes fade { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
   .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  
-  input[type=number]::-webkit-inner-spin-button, 
-  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .hide-scroll::-webkit-scrollbar { display: none; }
+  .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
   input[type=number] { -moz-appearance: textfield; }
 </style>
 </head>
@@ -83,6 +82,12 @@ tailwind.config = {
           <span class="material-symbols-outlined absolute left-3 text-muted text-[18px] pointer-events-none">search</span>
           <input id="searchDesktop" type="text" placeholder="Search products..." class="w-40 lg:w-64 bg-sand text-sm pl-9 pr-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-gold"/>
         </div>
+        
+        <!-- Account Link -->
+        <a id="accountBtn" href="./login.html" class="relative flex items-center justify-center p-2 text-ink hover:text-gold transition" title="My Account">
+          <span class="material-symbols-outlined text-[22px]">person</span>
+        </a>
+
         <button id="cartBtn" class="relative flex items-center gap-1.5 px-2.5 sm:px-3 py-2 bg-sand hover:bg-black hover:text-white rounded-lg transition">
           <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
           <span id="cartCount" class="text-xs font-semibold hidden sm:inline">0</span>
@@ -111,6 +116,7 @@ tailwind.config = {
     <a href="#" onclick="showPage('about'); closeMobileMenu();" class="hover:text-gold transition">About</a>
     <a href="#" onclick="showPage('blog'); closeMobileMenu();" class="hover:text-gold transition">Blog</a>
     <a href="#" onclick="showPage('contact'); closeMobileMenu();" class="hover:text-gold transition">Contact</a>
+    <a href="./login.html" class="hover:text-gold transition text-gold">Login / Signup</a>
   </nav>
 </aside>
 
@@ -222,7 +228,6 @@ tailwind.config = {
 
   <!-- ================= ABOUT US PAGE ================= -->
   <div id="page-about" class="hidden px-3 md:px-6 py-6 max-w-5xl mx-auto">
-    <!-- Hero Section -->
     <div class="text-center mb-12 fade-in">
       <span class="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold">About SammyH Collections</span>
       <h1 class="font-display text-4xl md:text-6xl mt-2 mb-4">Our Story</h1>
@@ -231,26 +236,18 @@ tailwind.config = {
       </p>
     </div>
 
-    <!-- Story Grid -->
     <div class="grid md:grid-cols-2 gap-8 items-center mb-16">
       <div class="bg-sand rounded-2xl aspect-square overflow-hidden flex items-center justify-center p-8">
         <img src="./logo.png" alt="SammyH Logo" class="w-full h-full object-contain"/>
       </div>
       <div class="space-y-4 text-muted leading-relaxed">
         <h2 class="font-display text-3xl text-ink">Curated for Excellence</h2>
-        <p>
-          Founded with a simple vision: to bring the world's most elegant footwear and bags to Lagos. We noticed a gap in the market for authentic, high-quality pieces that didn't compromise on comfort or style.
-        </p>
-        <p>
-          Every piece in our collection is hand-picked. From the sharpest men's Oxfords to the most delicate ladies' heels, we ensure that every item meets our strict standards of craftsmanship.
-        </p>
-        <p>
-          We don't manufacture; we curate. We travel, we test, and we select only the best so that when you shop with us, you're investing in a piece that will last.
-        </p>
+        <p>Founded with a simple vision: to bring the world's most elegant footwear and bags to Lagos. We noticed a gap in the market for authentic, high-quality pieces that didn't compromise on comfort or style.</p>
+        <p>Every piece in our collection is hand-picked. From the sharpest men's Oxfords to the most delicate ladies' heels, we ensure that every item meets our strict standards of craftsmanship.</p>
+        <p>We don't manufacture; we curate. We travel, we test, and we select only the best so that when you shop with us, you're investing in a piece that will last.</p>
       </div>
     </div>
 
-    <!-- Values -->
     <div class="grid md:grid-cols-3 gap-4 mb-16">
       <div class="bg-cream border border-black/5 rounded-xl p-6 text-center">
         <span class="material-symbols-outlined text-gold text-4xl mb-3">verified</span>
@@ -269,12 +266,11 @@ tailwind.config = {
       </div>
     </div>
 
-    <!-- Call to Action -->
     <div class="bg-ink text-white rounded-2xl p-8 md:p-12 text-center">
       <h2 class="font-display text-3xl mb-4">Experience the Difference</h2>
       <p class="text-white/70 mb-6 max-w-lg mx-auto">Visit our physical store in Iyana-Ipaja or browse our online collection today.</p>
       <div class="flex flex-wrap justify-center gap-3">
-        <button onclick="showPage('shop')" class="bg-gold text-ink font-semibold text-xs uppercase tracking-widest px-8 py-3 rounded hover:bg-white transition">Shop Now</button>
+        <button onclick="showPage('home')" class="bg-gold text-ink font-semibold text-xs uppercase tracking-widest px-8 py-3 rounded hover:bg-white transition">Shop Now</button>
         <button onclick="showPage('contact')" class="bg-white/10 text-white font-semibold text-xs uppercase tracking-widest px-8 py-3 rounded hover:bg-white/20 transition">Contact Us</button>
       </div>
     </div>
@@ -289,7 +285,6 @@ tailwind.config = {
     </div>
 
     <div class="grid md:grid-cols-2 gap-8">
-      <!-- Contact Form -->
       <div class="bg-cream border border-black/5 rounded-2xl p-6 md:p-8">
         <h2 class="font-display text-2xl mb-4">Send a Message</h2>
         <form id="contactForm" class="space-y-3">
@@ -311,7 +306,6 @@ tailwind.config = {
         </form>
       </div>
 
-      <!-- Contact Details -->
       <div class="space-y-4">
         <div class="bg-sand rounded-xl p-6 flex gap-4">
           <span class="material-symbols-outlined text-gold text-3xl">location_on</span>
@@ -320,7 +314,6 @@ tailwind.config = {
             <p class="text-sm text-muted leading-relaxed">11, Ipaja New Road,<br/>Iyana-Ipaja,<br/>Lagos State, Nigeria.</p>
           </div>
         </div>
-        
         <div class="bg-sand rounded-xl p-6 flex gap-4">
           <span class="material-symbols-outlined text-gold text-3xl">call</span>
           <div>
@@ -329,7 +322,6 @@ tailwind.config = {
             <p class="text-xs text-muted mt-1">Mon - Sat, 9am - 7pm</p>
           </div>
         </div>
-
         <div class="bg-sand rounded-xl p-6 flex gap-4">
           <span class="material-symbols-outlined text-gold text-3xl">share</span>
           <div>
@@ -455,6 +447,7 @@ let cart = JSON.parse(localStorage.getItem("sammyh_cart") || "[]");
 const WHATSAPP_NUMBER = "2347039898580";
 let currentPage = 1;
 const itemsPerPage = 30;
+let currentUser = null;
 
 const money = (n) => "₦" + Number(n || 0).toLocaleString("en-NG");
 const $ = (s) => document.querySelector(s);
@@ -486,6 +479,19 @@ function escapeHtml(str = "") {
 }
 
 /* =========================================================
+   USER SESSION INIT
+========================================================= */
+async function initUser() {
+  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
+  const { data: { session } } = await window.db.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    $("#accountBtn").href = "./dashboard.html";
+    $("#accountBtn").title = "My Dashboard";
+  }
+}
+
+/* =========================================================
    ANALYTICS TRACKING
 ========================================================= */
 async function trackEvent(type, page = 'home') {
@@ -501,14 +507,12 @@ async function trackEvent(type, page = 'home') {
    PAGE NAVIGATION
 ========================================================= */
 function showPage(page, productId = null) {
-  // Hide all pages
   $("#page-home").classList.add("hidden");
   $("#page-product").classList.add("hidden");
   $("#page-blog").classList.add("hidden");
   $("#page-about").classList.add("hidden");
   $("#page-contact").classList.add("hidden");
 
-  // Show requested page
   if (page === 'home') {
     $("#page-home").classList.remove("hidden");
     trackEvent('visit', 'home');
@@ -773,15 +777,31 @@ $("#checkoutBtn").addEventListener("click", () => {
 });
 $("#checkoutClose").addEventListener("click", () => checkoutOverlay.classList.add("hidden"));
 
-checkoutForm.addEventListener("submit", (e) => {
+// UPDATED CHECKOUT (Saves to DB if logged in)
+checkoutForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const fd = new FormData(e.target);
+  const name = fd.get("name");
+  const phone = fd.get("phone");
+  const address = fd.get("address");
   const total = cart.reduce((s, c) => s + c.qty * Number(c.price), 0);
 
+  if (currentUser) {
+    await window.db.from("orders").insert([{
+      user_id: currentUser.id,
+      customer_name: name,
+      phone: phone,
+      address: address,
+      items: cart,
+      total: total,
+      status: "Pending"
+    }]);
+  }
+
   let msg = `*🛍️ NEW ORDER — SammyH Collections*\n\n`;
-  msg += `*Customer:* ${fd.get("name")}\n`;
-  msg += `*Phone:* ${fd.get("phone")}\n`;
-  msg += `*Address:* ${fd.get("address")}\n\n`;
+  msg += `*Customer:* ${name}\n`;
+  msg += `*Phone:* ${phone}\n`;
+  msg += `*Address:* ${address}\n\n`;
   msg += `*Items:*\n`;
   cart.forEach((c, i) => { msg += `${i + 1}. ${c.name} × ${c.qty} — ${money(c.price * c.qty)}\n`; });
   msg += `\n*Subtotal:* ${money(total)}\n\n`;
@@ -855,6 +875,7 @@ document.querySelectorAll(".cat-card").forEach((btn) => {
 $("#year").textContent = new Date().getFullYear();
 renderCart();
 loadProducts();
+initUser(); // Initialize user session
 trackEvent('visit', 'home'); 
 </script>
 </body>
