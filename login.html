@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login · SammyH Collections</title>
+<link rel="icon" type="image/png" href="./favicon.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: { colors: { ink:"#0b0b0b", cream:"#fbf9f5", sand:"#f0eeea", gold:"#c9a24b", muted:"#6b6b6b" }, fontFamily: { display:['"Playfair Display"',"serif"], body:['"Hanken Grotesk"',"sans-serif"] } } }
+}
+</script>
+</head>
+<body class="bg-cream font-body text-ink antialiased min-h-screen flex items-center justify-center p-4">
+
+<div class="w-full max-w-md">
+  <div class="text-center mb-6">
+    <a href="./index.html"><img src="./logo.png" alt="SammyH" class="h-16 mx-auto mb-3"/></a>
+    <h1 class="font-display text-3xl" id="pageTitle">Welcome Back</h1>
+    <p class="text-sm text-muted mt-1" id="pageSubtitle">Log in to your account</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex bg-sand rounded-lg p-1 mb-6">
+    <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-md transition bg-white shadow-sm">Login</button>
+    <button id="tabSignup" onclick="switchAuthTab('signup')" class="flex-1 py-2 text-sm font-semibold rounded-md transition text-muted">Sign Up</button>
+  </div>
+
+  <!-- Login Form -->
+  <form id="loginForm" class="bg-white rounded-2xl p-6 shadow-sm border border-black/5 space-y-3">
+    <div>
+      <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Email</label>
+      <input id="loginEmail" required type="email" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+    </div>
+    <div>
+      <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Password</label>
+      <input id="loginPassword" required type="password" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+    </div>
+    <p id="loginError" class="text-red-600 text-xs hidden"></p>
+    <button type="submit" class="w-full bg-ink text-white text-xs uppercase tracking-widest py-3.5 rounded-lg hover:bg-gold transition font-semibold">Log In</button>
+  </form>
+
+  <!-- Signup Form -->
+  <form id="signupForm" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-black/5 space-y-3">
+    <div>
+      <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Full Name</label>
+      <input id="signupName" required type="text" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+    </div>
+    <div>
+      <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Email</label>
+      <input id="signupEmail" required type="email" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+    </div>
+    <div>
+      <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Password</label>
+      <input id="signupPassword" required type="password" minlength="6" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+      <p class="text-[10px] text-muted mt-1">Must be at least 6 characters.</p>
+    </div>
+    <p id="signupError" class="text-red-600 text-xs hidden"></p>
+    <p id="signupSuccess" class="text-green-600 text-xs hidden"></p>
+    <button type="submit" class="w-full bg-ink text-white text-xs uppercase tracking-widest py-3.5 rounded-lg hover:bg-gold transition font-semibold">Create Account</button>
+  </form>
+
+  <div class="text-center mt-6">
+    <a href="./index.html" class="text-xs text-muted hover:text-ink underline">← Continue as Guest</a>
+  </div>
+</div>
+
+<div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-ink text-white text-sm px-4 py-2.5 rounded-lg opacity-0 pointer-events-none transition-opacity z-[100]"></div>
+
+<script src="./supabase-config.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const toastEl = $("#toast");
+function toast(msg) { toastEl.textContent = msg; toastEl.style.opacity = "1"; clearTimeout(toastEl._t); toastEl._t = setTimeout(() => (toastEl.style.opacity = "0"), 2200); }
+
+async function initAuth() {
+  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
+  
+  // If already logged in, redirect to dashboard
+  const { data: { session } } = await window.db.auth.getSession();
+  if (session) window.location.href = "./dashboard.html";
+}
+
+function switchAuthTab(tab) {
+  if (tab === 'login') {
+    $("#tabLogin").classList.add("bg-white", "shadow-sm");
+    $("#tabLogin").classList.remove("text-muted");
+    $("#tabSignup").classList.remove("bg-white", "shadow-sm");
+    $("#tabSignup").classList.add("text-muted");
+    $("#loginForm").classList.remove("hidden");
+    $("#signupForm").classList.add("hidden");
+    $("#pageTitle").textContent = "Welcome Back";
+    $("#pageSubtitle").textContent = "Log in to your account";
+  } else {
+    $("#tabSignup").classList.add("bg-white", "shadow-sm");
+    $("#tabSignup").classList.remove("text-muted");
+    $("#tabLogin").classList.remove("bg-white", "shadow-sm");
+    $("#tabLogin").classList.add("text-muted");
+    $("#signupForm").classList.remove("hidden");
+    $("#loginForm").classList.add("hidden");
+    $("#pageTitle").textContent = "Create Account";
+    $("#pageSubtitle").textContent = "Join SammyH Collections";
+  }
+}
+
+$("#loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type=submit]");
+  btn.disabled = true; btn.textContent = "Logging in...";
+  const errEl = $("#loginError"); errEl.classList.add("hidden");
+
+  const { data, error } = await window.db.auth.signInWithPassword({
+    email: $("#loginEmail").value.trim(),
+    password: $("#loginPassword").value
+  });
+
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.classList.remove("hidden");
+    btn.disabled = false; btn.textContent = "Log In";
+  } else {
+    toast("Welcome back!");
+    setTimeout(() => window.location.href = "./dashboard.html", 500);
+  }
+});
+
+$("#signupForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type=submit]");
+  btn.disabled = true; btn.textContent = "Creating account...";
+  const errEl = $("#signupError"); errEl.classList.add("hidden");
+  const okEl = $("#signupSuccess"); okEl.classList.add("hidden");
+
+  const { data, error } = await window.db.auth.signUp({
+    email: $("#signupEmail").value.trim(),
+    password: $("#signupPassword").value,
+    options: { data: { full_name: $("#signupName").value.trim() } }
+  });
+
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.classList.remove("hidden");
+    btn.disabled = false; btn.textContent = "Create Account";
+  } else {
+    okEl.textContent = "Account created! Check your email to verify, then log in.";
+    okEl.classList.remove("hidden");
+    e.target.reset();
+    btn.disabled = false; btn.textContent = "Create Account";
+    setTimeout(() => switchAuthTab('login'), 3000);
+  }
+});
+
+initAuth();
+</script>
+</body>
+</html>
