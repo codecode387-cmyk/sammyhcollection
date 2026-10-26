@@ -42,107 +42,138 @@ tailwind.config = {
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="hidden min-h-screen">
-  <header class="bg-ink text-white sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-2">
-        <img src="./logo.png" alt="SammyH" class="h-9 w-auto"/>
-        <span class="font-display text-lg hidden sm:inline">Admin</span>
+<div id="dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
+  
+  <!-- Sidebar -->
+  <aside class="w-full md:w-64 bg-ink text-white flex-shrink-0 flex flex-col">
+    <div class="p-4 flex items-center gap-2 border-b border-white/10">
+      <img src="./logo.png" alt="SammyH" class="h-8 w-auto"/>
+      <span class="font-display text-lg">Admin</span>
+    </div>
+    <nav class="flex-1 p-2 flex flex-col gap-1 text-sm">
+      <button onclick="switchTab('analytics')" class="tab-btn text-left px-4 py-3 rounded-lg hover:bg-white/10 transition flex items-center gap-3"><span class="material-symbols-outlined text-lg">analytics</span> Analytics</button>
+      <button onclick="switchTab('products')" class="tab-btn text-left px-4 py-3 rounded-lg hover:bg-white/10 transition flex items-center gap-3"><span class="material-symbols-outlined text-lg">inventory_2</span> Products</button>
+      <button onclick="switchTab('blog')" class="tab-btn text-left px-4 py-3 rounded-lg hover:bg-white/10 transition flex items-center gap-3"><span class="material-symbols-outlined text-lg">article</span> Blog Manager</button>
+    </nav>
+    <div class="p-4 border-t border-white/10">
+      <a href="./index.html" class="block text-center text-xs bg-white/10 py-2 rounded mb-2 hover:bg-white/20 transition">View Store</a>
+      <button id="logoutBtn" class="w-full text-center text-xs bg-red-600/80 py-2 rounded hover:bg-red-600 transition">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 md:p-8 overflow-y-auto h-screen">
+    
+    <!-- ================= ANALYTICS TAB ================= -->
+    <div id="tab-analytics" class="hidden space-y-6">
+      <h1 class="font-display text-3xl mb-6">Store Analytics</h1>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-cream rounded-xl p-6 border border-black/5">
+          <p class="text-[11px] uppercase tracking-widest text-muted mb-1">Total Store Visits</p>
+          <p id="statVisits" class="font-display text-4xl">0</p>
+        </div>
+        <div class="bg-cream rounded-xl p-6 border border-black/5">
+          <p class="text-[11px] uppercase tracking-widest text-muted mb-1">Total Products</p>
+          <p id="statTotalProducts" class="font-display text-4xl">0</p>
+        </div>
+        <div class="bg-cream rounded-xl p-6 border border-black/5">
+          <p class="text-[11px] uppercase tracking-widest text-muted mb-1">Product Views</p>
+          <p id="statProductViews" class="font-display text-4xl">0</p>
+        </div>
       </div>
-      <div class="flex items-center gap-2">
-        <a href="./index.html" class="text-[10px] tracking-[0.15em] uppercase px-3 py-2 rounded hover:bg-white/10">View Store</a>
-        <button id="logoutBtn" class="text-[10px] tracking-[0.15em] uppercase px-3 py-2 rounded bg-white/10 hover:bg-white/20">Logout</button>
+      <div class="bg-cream rounded-xl p-6 border border-black/5">
+        <h2 class="font-semibold text-lg mb-4">Recent Activity</h2>
+        <div id="recentActivity" class="space-y-2 text-sm">
+          <!-- Injected -->
+        </div>
       </div>
     </div>
-  </header>
 
-  <main class="max-w-6xl mx-auto p-4 space-y-4">
-    <!-- Add / Edit form -->
-    <div class="bg-cream rounded-2xl p-5">
-      <div class="flex items-center justify-between mb-4">
-        <h2 id="formTitle" class="font-display text-2xl">Add New Product</h2>
-        <button id="cancelEditBtn" class="hidden text-xs text-muted underline">Cancel edit</button>
+    <!-- ================= PRODUCTS TAB ================= -->
+    <div id="tab-products" class="hidden space-y-6">
+      <div class="flex justify-between items-center mb-2">
+        <h1 class="font-display text-3xl">Products</h1>
+        <button onclick="resetProductForm()" class="bg-ink text-white text-xs px-4 py-2 rounded hover:bg-gold transition">+ Add New</button>
       </div>
-      <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <input type="hidden" id="productId"/>
-        <div class="md:col-span-2">
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Product Name *</label>
-          <input id="pName" required type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="e.g. Archetype 01 Sneaker"/>
-        </div>
-        <div>
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Category *</label>
-          <select id="pCategory" required class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold">
-            <option value="shoes">Shoes</option>
-            <option value="bags">Bags</option>
-            <option value="accessories">Accessories</option>
-          </select>
-        </div>
-        <div>
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Price (₦) *</label>
-          <input id="pPrice" required type="number" step="0.01" min="0" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="150000"/>
-        </div>
-        <div class="md:col-span-2">
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Description</label>
-          <textarea id="pDesc" rows="3" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="Detailed product description..."></textarea>
-        </div>
-        <div>
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Badge (optional)</label>
-          <input id="pBadge" type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="e.g. Bestseller, New"/>
-        </div>
-        <div class="flex items-end gap-3">
-          <label class="flex items-center gap-2 text-sm">
-            <input id="pStock" type="checkbox" checked class="accent-gold w-4 h-4"/>
-            In Stock
-          </label>
-        </div>
-        
-        <!-- MULTI IMAGE UPLOAD -->
-        <div class="md:col-span-2 border-t border-black/10 pt-4 mt-2">
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Product Images (Up to 5)</label>
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-            <div class="space-y-1">
-              <input type="file" id="img1" accept="image/*" class="w-full text-xs"/>
-              <img id="prev1" class="h-16 w-full object-cover rounded hidden border"/>
-            </div>
-            <div class="space-y-1">
-              <input type="file" id="img2" accept="image/*" class="w-full text-xs"/>
-              <img id="prev2" class="h-16 w-full object-cover rounded hidden border"/>
-            </div>
-            <div class="space-y-1">
-              <input type="file" id="img3" accept="image/*" class="w-full text-xs"/>
-              <img id="prev3" class="h-16 w-full object-cover rounded hidden border"/>
-            </div>
-            <div class="space-y-1">
-              <input type="file" id="img4" accept="image/*" class="w-full text-xs"/>
-              <img id="prev4" class="h-16 w-full object-cover rounded hidden border"/>
-            </div>
-            <div class="space-y-1">
-              <input type="file" id="img5" accept="image/*" class="w-full text-xs"/>
-              <img id="prev5" class="h-16 w-full object-cover rounded hidden border"/>
+
+      <!-- Product Form -->
+      <div class="bg-cream rounded-xl p-5 border border-black/5">
+        <h2 id="prodFormTitle" class="font-semibold text-lg mb-4">Add New Product</h2>
+        <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <input type="hidden" id="productId"/>
+          <div class="md:col-span-2">
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Name</label>
+            <input id="pName" required type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"/>
+          </div>
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Category</label>
+            <select id="pCategory" required class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm">
+              <option value="shoes">Shoes (Men/Ladies)</option>
+              <option value="bags">Bags</option>
+              <option value="accessories">Accessories</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Price (₦)</label>
+            <input id="pPrice" required type="number" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"/>
+          </div>
+          <div class="md:col-span-2">
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Description</label>
+            <textarea id="pDesc" rows="2" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"></textarea>
+          </div>
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Badge (Optional)</label>
+            <input id="pBadge" type="text" placeholder="e.g. Bestseller" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"/>
+          </div>
+          <div class="flex items-end pb-2">
+            <label class="flex items-center gap-2 text-sm font-semibold"><input id="pStock" type="checkbox" checked class="accent-gold w-4 h-4"/> In Stock</label>
+          </div>
+          
+          <div class="md:col-span-2 border-t border-black/10 pt-3 mt-1">
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Images (Up to 5)</label>
+            <div class="grid grid-cols-5 gap-2 mt-2">
+              <input type="file" id="img1" accept="image/*" class="w-full text-xs"/><img id="prev1" class="h-12 w-full object-cover rounded hidden"/>
+              <input type="file" id="img2" accept="image/*" class="w-full text-xs"/><img id="prev2" class="h-12 w-full object-cover rounded hidden"/>
+              <input type="file" id="img3" accept="image/*" class="w-full text-xs"/><img id="prev3" class="h-12 w-full object-cover rounded hidden"/>
+              <input type="file" id="img4" accept="image/*" class="w-full text-xs"/><img id="prev4" class="h-12 w-full object-cover rounded hidden"/>
+              <input type="file" id="img5" accept="image/*" class="w-full text-xs"/><img id="prev5" class="h-12 w-full object-cover rounded hidden"/>
             </div>
           </div>
-        </div>
+          <div class="md:col-span-2 mt-2">
+            <button type="submit" id="saveBtn" class="w-full bg-ink text-white text-xs uppercase py-3 rounded hover:bg-gold transition font-semibold">Save Product</button>
+          </div>
+        </form>
+      </div>
 
-        <div class="md:col-span-2 flex gap-2 mt-2">
-          <button type="submit" id="saveBtn" class="flex-1 bg-ink text-white text-[11px] tracking-[0.15em] uppercase py-3.5 rounded hover:bg-gold transition font-semibold flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined text-base">save</span>
-            <span id="saveBtnText">Save Product</span>
-          </button>
-        </div>
-        <p id="formMsg" class="md:col-span-2 hidden text-sm"></p>
-      </form>
+      <div id="adminProductList" class="space-y-2"></div>
     </div>
 
-    <!-- Products list -->
-    <div class="bg-cream rounded-2xl p-5">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="font-display text-2xl">All Products</h2>
-        <input id="adminSearch" type="text" placeholder="Filter..." class="bg-white border border-black/10 px-3 py-2 rounded-lg text-sm w-40 focus:outline-none focus:ring-1 focus:ring-gold"/>
+    <!-- ================= BLOG TAB ================= -->
+    <div id="tab-blog" class="hidden space-y-6">
+      <h1 class="font-display text-3xl mb-2">Blog Manager</h1>
+      
+      <div class="bg-cream rounded-xl p-5 border border-black/5">
+        <h2 class="font-semibold text-lg mb-4">Create New Post</h2>
+        <form id="blogForm" class="space-y-3">
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Title</label>
+            <input id="bTitle" required type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"/>
+          </div>
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Content</label>
+            <textarea id="bContent" required rows="5" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"></textarea>
+          </div>
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Cover Image</label>
+            <input id="bImg" type="file" accept="image/*" class="w-full mt-1 text-sm"/>
+          </div>
+          <button type="submit" id="bSaveBtn" class="bg-ink text-white text-xs uppercase px-6 py-3 rounded hover:bg-gold transition font-semibold">Publish Post</button>
+        </form>
       </div>
-      <div id="adminList" class="space-y-2">
-        <p class="text-center text-muted text-sm py-8">Loading…</p>
-      </div>
+
+      <div id="adminBlogList" class="space-y-2"></div>
     </div>
+
   </main>
 </div>
 
@@ -156,19 +187,15 @@ const SESSION_KEY = "sammyh_admin_session";
 
 const $ = (s) => document.querySelector(s);
 const toastEl = $("#toast");
-function toast(msg) {
-  toastEl.textContent = msg;
-  toastEl.style.opacity = "1";
-  clearTimeout(toastEl._t);
-  toastEl._t = setTimeout(() => (toastEl.style.opacity = "0"), 2200);
-}
+function toast(msg) { toastEl.textContent = msg; toastEl.style.opacity = "1"; clearTimeout(toastEl._t); toastEl._t = setTimeout(() => (toastEl.style.opacity = "0"), 2200); }
 const money = (n) => "₦" + Number(n || 0).toLocaleString("en-NG");
+const escapeHtml = (str = "") => String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-/* ---------- AUTH ---------- */
+/* ---------- AUTH & TABS ---------- */
 function showDashboard() {
   $("#loginScreen").classList.add("hidden");
   $("#dashboard").classList.remove("hidden");
-  loadAdminProducts();
+  switchTab('analytics'); // Default tab
 }
 if (localStorage.getItem(SESSION_KEY) === "ok") showDashboard();
 
@@ -184,100 +211,107 @@ $("#loginForm").addEventListener("submit", (e) => {
 });
 $("#logoutBtn").addEventListener("click", () => { localStorage.removeItem(SESSION_KEY); location.reload(); });
 
-/* ---------- PRODUCT CRUD ---------- */
+function switchTab(tab) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("bg-white/10"));
+  document.querySelectorAll("[id^='tab-']").forEach(d => d.classList.add("hidden"));
+  
+  // Find button and activate
+  const btn = Array.from(document.querySelectorAll(".tab-btn")).find(b => b.getAttribute("onclick").includes(tab));
+  if (btn) btn.classList.add("bg-white/10");
+  
+  $(`#tab-${tab}`).classList.remove("hidden");
+
+  if (tab === 'analytics') loadAnalytics();
+  if (tab === 'products') loadAdminProducts();
+  if (tab === 'blog') loadAdminBlogs();
+}
+
+/* ---------- ANALYTICS ---------- */
+async function loadAnalytics() {
+  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
+  
+  const { data, error } = await window.db.from("analytics").select("*").order("created_at", { ascending: false });
+  if (error) return console.error(error);
+
+  const visits = data.filter(d => d.event_type === 'visit' && d.page === 'home').length;
+  const productViews = data.filter(d => d.event_type === 'product_view').length;
+  
+  $("#statVisits").textContent = visits;
+  $("#statProductViews").textContent = productViews;
+
+  const { count } = await window.db.from("products").select("*", { count: 'exact', head: true });
+  $("#statTotalProducts").textContent = count || 0;
+
+  $("#recentActivity").innerHTML = data.slice(0, 10).map(d => `
+    <div class="flex justify-between items-center border-b border-black/5 py-2">
+      <span class="font-medium capitalize">${d.event_type.replace('_', ' ')}</span>
+      <span class="text-muted text-xs">${new Date(d.created_at).toLocaleString()}</span>
+    </div>
+  `).join("");
+}
+
+/* ---------- PRODUCTS ---------- */
 let products = [];
 let editingId = null;
-let filtered = [];
-let existingImages = []; // Holds images currently in DB during edit
+let existingImages = [];
 
 async function loadAdminProducts() {
   await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
   const { data, error } = await window.db.from("products").select("*").order("created_at", { ascending: false });
-  if (error) return $("#adminList").innerHTML = `<p class="text-center text-red-600 text-sm py-8">${error.message}</p>`;
+  if (error) return;
   products = data || [];
-  renderAdminList();
+  renderAdminProducts();
 }
 
-function renderAdminList() {
-  const q = ($("#adminSearch").value || "").toLowerCase();
-  filtered = products.filter((p) => !q || p.name?.toLowerCase().includes(q));
-  if (!filtered.length) return $("#adminList").innerHTML = `<p class="text-center text-muted text-sm py-8">No products yet.</p>`;
-  
-  $("#adminList").innerHTML = filtered.map((p) => {
+function renderAdminProducts() {
+  $("#adminProductList").innerHTML = products.map(p => {
     const img = p.images && p.images.length > 0 ? p.images[0] : null;
     return `
-    <div class="flex items-center gap-3 bg-white rounded-lg p-2 border border-black/5">
-      <div class="w-14 h-14 bg-sand rounded overflow-hidden shrink-0">
-        ${img ? `<img src="${img}" class="w-full h-full object-cover"/>` : `<div class="w-full h-full flex items-center justify-center text-muted"><span class="material-symbols-outlined text-xl">image</span></div>`}
+    <div class="flex items-center gap-3 bg-white rounded-lg p-3 border border-black/5">
+      <div class="w-12 h-12 bg-sand rounded overflow-hidden shrink-0">
+        ${img ? `<img src="${img}" class="w-full h-full object-cover"/>` : ''}
       </div>
       <div class="flex-1 min-w-0">
         <p class="font-semibold text-sm truncate">${escapeHtml(p.name)}</p>
-        <p class="text-xs text-muted">${money(p.price)} · ${p.category} ${p.in_stock === false ? "· <span class=text-red-600>Out of stock</span>" : ""}</p>
+        <p class="text-xs text-muted">${money(p.price)} · ${p.category}</p>
       </div>
-      <div class="flex gap-1">
-        <button class="edit-btn p-2 rounded hover:bg-sand text-muted hover:text-ink" data-id="${p.id}"><span class="material-symbols-outlined text-base">edit</span></button>
-        <button class="del-btn p-2 rounded hover:bg-red-50 text-muted hover:text-red-600" data-id="${p.id}"><span class="material-symbols-outlined text-base">delete</span></button>
-      </div>
+      <button onclick="startEditProduct('${p.id}')" class="p-2 hover:bg-sand rounded"><span class="material-symbols-outlined text-base">edit</span></button>
+      <button onclick="deleteProduct('${p.id}')" class="p-2 hover:bg-red-50 text-red-600 rounded"><span class="material-symbols-outlined text-base">delete</span></button>
     </div>`;
   }).join("");
-
-  document.querySelectorAll(".edit-btn").forEach((b) => b.addEventListener("click", () => startEdit(b.dataset.id)));
-  document.querySelectorAll(".del-btn").forEach((b) => b.addEventListener("click", () => deleteProduct(b.dataset.id)));
 }
 
-function escapeHtml(str = "") {
-  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-function startEdit(id) {
-  const p = products.find((x) => x.id === id);
+function startEditProduct(id) {
+  const p = products.find(x => x.id === id);
   if (!p) return;
   editingId = id;
   existingImages = p.images || [];
-  
   $("#productId").value = id;
-  $("#pName").value = p.name || "";
-  $("#pCategory").value = p.category || "shoes";
-  $("#pPrice").value = p.price || 0;
+  $("#pName").value = p.name;
+  $("#pCategory").value = p.category;
+  $("#pPrice").value = p.price;
   $("#pDesc").value = p.description || "";
   $("#pBadge").value = p.badge || "";
   $("#pStock").checked = p.in_stock !== false;
-  
-  // Reset file inputs
   for(let i=1; i<=5; i++) {
     $(`#img${i}`).value = "";
-    const preview = $(`#prev${i}`);
-    if (existingImages[i-1]) {
-      preview.src = existingImages[i-1];
-      preview.classList.remove("hidden");
-    } else {
-      preview.classList.add("hidden");
-    }
+    if (existingImages[i-1]) { $(`#prev${i}`).src = existingImages[i-1]; $(`#prev${i}`).classList.remove("hidden"); }
+    else $(`#prev${i}`).classList.add("hidden");
   }
-
-  $("#formTitle").textContent = "Edit Product";
-  $("#saveBtnText").textContent = "Update Product";
-  $("#cancelEditBtn").classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  $("#prodFormTitle").textContent = "Edit Product";
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-$("#cancelEditBtn").addEventListener("click", resetForm);
-
-function resetForm() {
+function resetProductForm() {
   editingId = null;
   existingImages = [];
   $("#productForm").reset();
   $("#productId").value = "";
-  $("#pStock").checked = true;
+  $("#prodFormTitle").textContent = "Add New Product";
   for(let i=1; i<=5; i++) $(`#prev${i}`).classList.add("hidden");
-  
-  $("#formTitle").textContent = "Add New Product";
-  $("#saveBtnText").textContent = "Save Product";
-  $("#cancelEditBtn").classList.add("hidden");
 }
 
 async function uploadImage(file) {
-  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
   const ext = file.name.split(".").pop();
   const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   const { error } = await window.db.storage.from("product-images").upload(fileName, file);
@@ -286,43 +320,23 @@ async function uploadImage(file) {
   return data.publicUrl;
 }
 
-// Handle Preview for all 5 inputs
 for(let i=1; i<=5; i++) {
   $(`#img${i}`).addEventListener("change", (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      $(`#prev${i}`).src = reader.result;
-      $(`#prev${i}`).classList.remove("hidden");
-    };
-    reader.readAsDataURL(file);
+    if (file) { $(`#prev${i}`).src = URL.createObjectURL(file); $(`#prev${i}`).classList.remove("hidden"); }
   });
 }
 
 $("#productForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const msg = $("#formMsg");
-  msg.classList.add("hidden");
-  const btn = $("#saveBtn");
-  btn.disabled = true;
-  btn.style.opacity = "0.6";
-
+  const btn = $("#saveBtn"); btn.disabled = true; btn.textContent = "Saving...";
   try {
     let newImages = [];
-    // Upload any new files
     for(let i=1; i<=5; i++) {
       const file = $(`#img${i}`).files[0];
-      if (file) {
-        btn.querySelector("span:last-child").textContent = `Uploading image ${i}...`;
-        const url = await uploadImage(file);
-        newImages.push(url);
-      } else if (existingImages[i-1]) {
-        // Keep old image if no new file is uploaded for that slot
-        newImages.push(existingImages[i-1]);
-      }
+      if (file) { newImages.push(await uploadImage(file)); }
+      else if (existingImages[i-1]) { newImages.push(existingImages[i-1]); }
     }
-
     const payload = {
       name: $("#pName").value.trim(),
       category: $("#pCategory").value,
@@ -332,35 +346,62 @@ $("#productForm").addEventListener("submit", async (e) => {
       in_stock: $("#pStock").checked,
       images: newImages,
     };
-
-    let res = editingId 
-      ? await window.db.from("products").update(payload).eq("id", editingId)
-      : await window.db.from("products").insert(payload);
-
+    let res = editingId ? await window.db.from("products").update(payload).eq("id", editingId) : await window.db.from("products").insert(payload);
     if (res.error) throw res.error;
-
-    toast(editingId ? "Product updated ✓" : "Product created ✓");
-    resetForm();
+    toast("Product saved!");
+    resetProductForm();
     await loadAdminProducts();
-  } catch (err) {
-    msg.textContent = "Error: " + err.message;
-    msg.className = "md:col-span-2 text-sm text-red-600";
-  } finally {
-    btn.disabled = false;
-    btn.style.opacity = "1";
-    btn.querySelector("span:last-child").textContent = editingId ? "Update Product" : "Save Product";
-  }
+  } catch (err) { toast("Error: " + err.message); }
+  finally { btn.disabled = false; btn.textContent = "Save Product"; }
 });
 
 async function deleteProduct(id) {
-  if (!confirm("Delete this product? This cannot be undone.")) return;
-  const { error } = await window.db.from("products").delete().eq("id", id);
-  if (error) return toast("Error: " + error.message);
-  toast("Product deleted");
+  if (!confirm("Delete this product?")) return;
+  await window.db.from("products").delete().eq("id", id);
+  toast("Deleted");
   await loadAdminProducts();
 }
 
-$("#adminSearch").addEventListener("input", renderAdminList);
+/* ---------- BLOG ---------- */
+async function loadAdminBlogs() {
+  const { data } = await window.db.from("blogs").select("*").order("created_at", { ascending: false });
+  $("#adminBlogList").innerHTML = (data || []).map(b => `
+    <div class="flex items-center justify-between bg-white p-3 rounded-lg border border-black/5">
+      <div>
+        <p class="font-semibold text-sm">${escapeHtml(b.title)}</p>
+        <p class="text-xs text-muted">${new Date(b.created_at).toLocaleDateString()}</p>
+      </div>
+      <button onclick="deleteBlog('${b.id}')" class="p-2 text-red-600 hover:bg-red-50 rounded"><span class="material-symbols-outlined text-base">delete</span></button>
+    </div>
+  `).join("") || "<p class='text-sm text-muted'>No posts yet.</p>";
+}
+
+$("#blogForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = $("#bSaveBtn"); btn.disabled = true; btn.textContent = "Publishing...";
+  try {
+    let imageUrl = null;
+    const file = $("#bImg").files[0];
+    if (file) imageUrl = await uploadImage(file); // Reusing the same storage bucket
+    
+    const { error } = await window.db.from("blogs").insert([{
+      title: $("#bTitle").value.trim(),
+      content: $("#bContent").value.trim(),
+      image_url: imageUrl
+    }]);
+    if (error) throw error;
+    toast("Blog published!");
+    $("#blogForm").reset();
+    await loadAdminBlogs();
+  } catch (err) { toast("Error: " + err.message); }
+  finally { btn.disabled = false; btn.textContent = "Publish Post"; }
+});
+
+async function deleteBlog(id) {
+  if (!confirm("Delete this post?")) return;
+  await window.db.from("blogs").delete().eq("id", id);
+  await loadAdminBlogs();
+}
 </script>
 </body>
 </html>
