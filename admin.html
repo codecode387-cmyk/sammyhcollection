@@ -30,7 +30,6 @@ tailwind.config = {
     <div class="text-center mb-6">
       <img src="./logo.png" alt="SammyH" class="h-16 mx-auto mb-3"/>
       <h1 class="font-display text-2xl">Admin Login</h1>
-      <p class="text-xs text-muted mt-1">SammyH Collections · Private</p>
     </div>
     <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Email</label>
     <input id="email" required type="email" class="w-full mt-1 mb-3 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="you@gmail.com"/>
@@ -44,7 +43,6 @@ tailwind.config = {
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="hidden min-h-screen">
-  <!-- Top bar -->
   <header class="bg-ink text-white sticky top-0 z-30">
     <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
       <div class="flex items-center gap-2">
@@ -59,26 +57,6 @@ tailwind.config = {
   </header>
 
   <main class="max-w-6xl mx-auto p-4 space-y-4">
-    <!-- Stats -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="bg-cream rounded-xl p-4">
-        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">Total Products</p>
-        <p id="statTotal" class="font-display text-3xl mt-1">0</p>
-      </div>
-      <div class="bg-cream rounded-xl p-4">
-        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">In Stock</p>
-        <p id="statStock" class="font-display text-3xl mt-1">0</p>
-      </div>
-      <div class="bg-cream rounded-xl p-4">
-        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">Categories</p>
-        <p id="statCats" class="font-display text-3xl mt-1">0</p>
-      </div>
-      <div class="bg-cream rounded-xl p-4">
-        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">Avg Price</p>
-        <p id="statAvg" class="font-display text-3xl mt-1">$0</p>
-      </div>
-    </div>
-
     <!-- Add / Edit form -->
     <div class="bg-cream rounded-2xl p-5">
       <div class="flex items-center justify-between mb-4">
@@ -100,12 +78,12 @@ tailwind.config = {
           </select>
         </div>
         <div>
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Price (USD) *</label>
-          <input id="pPrice" required type="number" step="0.01" min="0" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="220"/>
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Price (₦) *</label>
+          <input id="pPrice" required type="number" step="0.01" min="0" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="150000"/>
         </div>
         <div class="md:col-span-2">
           <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Description</label>
-          <textarea id="pDesc" rows="2" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="Short product description..."></textarea>
+          <textarea id="pDesc" rows="3" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="Detailed product description..."></textarea>
         </div>
         <div>
           <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Badge (optional)</label>
@@ -117,16 +95,35 @@ tailwind.config = {
             In Stock
           </label>
         </div>
-        <div class="md:col-span-2">
-          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Product Image</label>
-          <input id="pImageFile" type="file" accept="image/*" class="w-full mt-1 text-sm"/>
-          <p class="text-xs text-muted mt-1">Or paste image URL:</p>
-          <input id="pImageUrl" type="url" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="https://..."/>
-          <div id="imagePreview" class="mt-2 hidden">
-            <img id="imagePreviewImg" class="h-24 w-24 object-cover rounded-lg border border-black/10"/>
+        
+        <!-- MULTI IMAGE UPLOAD -->
+        <div class="md:col-span-2 border-t border-black/10 pt-4 mt-2">
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Product Images (Up to 5)</label>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
+            <div class="space-y-1">
+              <input type="file" id="img1" accept="image/*" class="w-full text-xs"/>
+              <img id="prev1" class="h-16 w-full object-cover rounded hidden border"/>
+            </div>
+            <div class="space-y-1">
+              <input type="file" id="img2" accept="image/*" class="w-full text-xs"/>
+              <img id="prev2" class="h-16 w-full object-cover rounded hidden border"/>
+            </div>
+            <div class="space-y-1">
+              <input type="file" id="img3" accept="image/*" class="w-full text-xs"/>
+              <img id="prev3" class="h-16 w-full object-cover rounded hidden border"/>
+            </div>
+            <div class="space-y-1">
+              <input type="file" id="img4" accept="image/*" class="w-full text-xs"/>
+              <img id="prev4" class="h-16 w-full object-cover rounded hidden border"/>
+            </div>
+            <div class="space-y-1">
+              <input type="file" id="img5" accept="image/*" class="w-full text-xs"/>
+              <img id="prev5" class="h-16 w-full object-cover rounded hidden border"/>
+            </div>
           </div>
         </div>
-        <div class="md:col-span-2 flex gap-2">
+
+        <div class="md:col-span-2 flex gap-2 mt-2">
           <button type="submit" id="saveBtn" class="flex-1 bg-ink text-white text-[11px] tracking-[0.15em] uppercase py-3.5 rounded hover:bg-gold transition font-semibold flex items-center justify-center gap-2">
             <span class="material-symbols-outlined text-base">save</span>
             <span id="saveBtnText">Save Product</span>
@@ -149,7 +146,6 @@ tailwind.config = {
   </main>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-ink text-white text-sm px-4 py-2.5 rounded-lg opacity-0 pointer-events-none transition-opacity z-[100]"></div>
 
 <script src="./supabase-config.js"></script>
@@ -166,7 +162,7 @@ function toast(msg) {
   clearTimeout(toastEl._t);
   toastEl._t = setTimeout(() => (toastEl.style.opacity = "0"), 2200);
 }
-const money = (n) => "$" + Number(n || 0).toFixed(2);
+const money = (n) => "₦" + Number(n || 0).toLocaleString("en-NG");
 
 /* ---------- AUTH ---------- */
 function showDashboard() {
@@ -174,65 +170,45 @@ function showDashboard() {
   $("#dashboard").classList.remove("hidden");
   loadAdminProducts();
 }
-function logout() {
-  localStorage.removeItem(SESSION_KEY);
-  location.reload();
-}
 if (localStorage.getItem(SESSION_KEY) === "ok") showDashboard();
 
 $("#loginForm").addEventListener("submit", (e) => {
   e.preventDefault();
-  const email = $("#email").value.trim();
-  const pass = $("#password").value;
-  if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
+  if ($("#email").value.trim() === ADMIN_EMAIL && $("#password").value === ADMIN_PASSWORD) {
     localStorage.setItem(SESSION_KEY, "ok");
     showDashboard();
   } else {
-    const err = $("#loginError");
-    err.textContent = "Invalid email or password.";
-    err.classList.remove("hidden");
+    $("#loginError").textContent = "Invalid email or password.";
+    $("#loginError").classList.remove("hidden");
   }
 });
-$("#logoutBtn").addEventListener("click", logout);
+$("#logoutBtn").addEventListener("click", () => { localStorage.removeItem(SESSION_KEY); location.reload(); });
 
 /* ---------- PRODUCT CRUD ---------- */
 let products = [];
 let editingId = null;
 let filtered = [];
+let existingImages = []; // Holds images currently in DB during edit
 
 async function loadAdminProducts() {
   await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
   const { data, error } = await window.db.from("products").select("*").order("created_at", { ascending: false });
-  if (error) {
-    $("#adminList").innerHTML = `<p class="text-center text-red-600 text-sm py-8">${error.message}</p>`;
-    return;
-  }
+  if (error) return $("#adminList").innerHTML = `<p class="text-center text-red-600 text-sm py-8">${error.message}</p>`;
   products = data || [];
   renderAdminList();
-  updateStats();
-}
-
-function updateStats() {
-  $("#statTotal").textContent = products.length;
-  $("#statStock").textContent = products.filter((p) => p.in_stock !== false).length;
-  $("#statCats").textContent = new Set(products.map((p) => p.category)).size;
-  const avg = products.length ? products.reduce((s, p) => s + Number(p.price), 0) / products.length : 0;
-  $("#statAvg").textContent = money(avg).replace(".00", "");
 }
 
 function renderAdminList() {
   const q = ($("#adminSearch").value || "").toLowerCase();
   filtered = products.filter((p) => !q || p.name?.toLowerCase().includes(q));
-  if (!filtered.length) {
-    $("#adminList").innerHTML = `<p class="text-center text-muted text-sm py-8">No products yet. Add one above.</p>`;
-    return;
-  }
-  $("#adminList").innerHTML = filtered
-    .map(
-      (p) => `
+  if (!filtered.length) return $("#adminList").innerHTML = `<p class="text-center text-muted text-sm py-8">No products yet.</p>`;
+  
+  $("#adminList").innerHTML = filtered.map((p) => {
+    const img = p.images && p.images.length > 0 ? p.images[0] : null;
+    return `
     <div class="flex items-center gap-3 bg-white rounded-lg p-2 border border-black/5">
       <div class="w-14 h-14 bg-sand rounded overflow-hidden shrink-0">
-        ${p.image_url ? `<img src="${p.image_url}" class="w-full h-full object-cover"/>` : `<div class="w-full h-full flex items-center justify-center text-muted"><span class="material-symbols-outlined text-xl">image</span></div>`}
+        ${img ? `<img src="${img}" class="w-full h-full object-cover"/>` : `<div class="w-full h-full flex items-center justify-center text-muted"><span class="material-symbols-outlined text-xl">image</span></div>`}
       </div>
       <div class="flex-1 min-w-0">
         <p class="font-semibold text-sm truncate">${escapeHtml(p.name)}</p>
@@ -242,9 +218,8 @@ function renderAdminList() {
         <button class="edit-btn p-2 rounded hover:bg-sand text-muted hover:text-ink" data-id="${p.id}"><span class="material-symbols-outlined text-base">edit</span></button>
         <button class="del-btn p-2 rounded hover:bg-red-50 text-muted hover:text-red-600" data-id="${p.id}"><span class="material-symbols-outlined text-base">delete</span></button>
       </div>
-    </div>`
-    )
-    .join("");
+    </div>`;
+  }).join("");
 
   document.querySelectorAll(".edit-btn").forEach((b) => b.addEventListener("click", () => startEdit(b.dataset.id)));
   document.querySelectorAll(".del-btn").forEach((b) => b.addEventListener("click", () => deleteProduct(b.dataset.id)));
@@ -258,6 +233,8 @@ function startEdit(id) {
   const p = products.find((x) => x.id === id);
   if (!p) return;
   editingId = id;
+  existingImages = p.images || [];
+  
   $("#productId").value = id;
   $("#pName").value = p.name || "";
   $("#pCategory").value = p.category || "shoes";
@@ -265,14 +242,19 @@ function startEdit(id) {
   $("#pDesc").value = p.description || "";
   $("#pBadge").value = p.badge || "";
   $("#pStock").checked = p.in_stock !== false;
-  $("#pImageUrl").value = p.image_url || "";
-  $("#pImageFile").value = "";
-  if (p.image_url) {
-    $("#imagePreview").classList.remove("hidden");
-    $("#imagePreviewImg").src = p.image_url;
-  } else {
-    $("#imagePreview").classList.add("hidden");
+  
+  // Reset file inputs
+  for(let i=1; i<=5; i++) {
+    $(`#img${i}`).value = "";
+    const preview = $(`#prev${i}`);
+    if (existingImages[i-1]) {
+      preview.src = existingImages[i-1];
+      preview.classList.remove("hidden");
+    } else {
+      preview.classList.add("hidden");
+    }
   }
+
   $("#formTitle").textContent = "Edit Product";
   $("#saveBtnText").textContent = "Update Product";
   $("#cancelEditBtn").classList.remove("hidden");
@@ -283,10 +265,12 @@ $("#cancelEditBtn").addEventListener("click", resetForm);
 
 function resetForm() {
   editingId = null;
+  existingImages = [];
   $("#productForm").reset();
   $("#productId").value = "";
   $("#pStock").checked = true;
-  $("#imagePreview").classList.add("hidden");
+  for(let i=1; i<=5; i++) $(`#prev${i}`).classList.add("hidden");
+  
   $("#formTitle").textContent = "Add New Product";
   $("#saveBtnText").textContent = "Save Product";
   $("#cancelEditBtn").classList.add("hidden");
@@ -302,32 +286,41 @@ async function uploadImage(file) {
   return data.publicUrl;
 }
 
-$("#pImageFile").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    $("#imagePreview").classList.remove("hidden");
-    $("#imagePreviewImg").src = reader.result;
-  };
-  reader.readAsDataURL(file);
-});
+// Handle Preview for all 5 inputs
+for(let i=1; i<=5; i++) {
+  $(`#img${i}`).addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      $(`#prev${i}`).src = reader.result;
+      $(`#prev${i}`).classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 $("#productForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const msg = $("#formMsg");
   msg.classList.add("hidden");
-
   const btn = $("#saveBtn");
   btn.disabled = true;
   btn.style.opacity = "0.6";
 
   try {
-    let imageUrl = $("#pImageUrl").value.trim();
-    const file = $("#pImageFile").files[0];
-    if (file) {
-      btn.querySelector("span:last-child").textContent = "Uploading image...";
-      imageUrl = await uploadImage(file);
+    let newImages = [];
+    // Upload any new files
+    for(let i=1; i<=5; i++) {
+      const file = $(`#img${i}`).files[0];
+      if (file) {
+        btn.querySelector("span:last-child").textContent = `Uploading image ${i}...`;
+        const url = await uploadImage(file);
+        newImages.push(url);
+      } else if (existingImages[i-1]) {
+        // Keep old image if no new file is uploaded for that slot
+        newImages.push(existingImages[i-1]);
+      }
     }
 
     const payload = {
@@ -337,15 +330,12 @@ $("#productForm").addEventListener("submit", async (e) => {
       description: $("#pDesc").value.trim(),
       badge: $("#pBadge").value.trim() || null,
       in_stock: $("#pStock").checked,
-      image_url: imageUrl || null,
+      images: newImages,
     };
 
-    let res;
-    if (editingId) {
-      res = await window.db.from("products").update(payload).eq("id", editingId);
-    } else {
-      res = await window.db.from("products").insert(payload);
-    }
+    let res = editingId 
+      ? await window.db.from("products").update(payload).eq("id", editingId)
+      : await window.db.from("products").insert(payload);
 
     if (res.error) throw res.error;
 
