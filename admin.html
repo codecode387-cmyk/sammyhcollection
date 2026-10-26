@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin · SammyH Collections</title>
+<link rel="icon" type="image/png" href="./favicon.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { ink:"#0b0b0b", cream:"#fbf9f5", sand:"#f0eeea", gold:"#c9a24b", muted:"#6b6b6b" },
+      fontFamily: { display:['"Playfair Display"',"serif"], body:['"Hanken Grotesk"',"sans-serif"] }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+</style>
+</head>
+<body class="bg-sand font-body text-ink antialiased">
+
+<!-- LOGIN -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
+  <form id="loginForm" class="bg-cream rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-sm">
+    <div class="text-center mb-6">
+      <img src="./logo.png" alt="SammyH" class="h-16 mx-auto mb-3"/>
+      <h1 class="font-display text-2xl">Admin Login</h1>
+      <p class="text-xs text-muted mt-1">SammyH Collections · Private</p>
+    </div>
+    <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Email</label>
+    <input id="email" required type="email" class="w-full mt-1 mb-3 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="you@gmail.com"/>
+    <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Password</label>
+    <input id="password" required type="password" class="w-full mt-1 mb-4 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="••••••••"/>
+    <p id="loginError" class="hidden text-red-600 text-xs mb-3"></p>
+    <button type="submit" class="w-full bg-ink text-white text-[11px] tracking-[0.15em] uppercase py-3.5 rounded hover:bg-gold transition font-semibold">Enter Dashboard</button>
+    <a href="./index.html" class="block text-center text-xs text-muted hover:text-ink mt-4">← Back to Store</a>
+  </form>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden min-h-screen">
+  <!-- Top bar -->
+  <header class="bg-ink text-white sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <img src="./logo.png" alt="SammyH" class="h-9 w-auto"/>
+        <span class="font-display text-lg hidden sm:inline">Admin</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="./index.html" class="text-[10px] tracking-[0.15em] uppercase px-3 py-2 rounded hover:bg-white/10">View Store</a>
+        <button id="logoutBtn" class="text-[10px] tracking-[0.15em] uppercase px-3 py-2 rounded bg-white/10 hover:bg-white/20">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-4 space-y-4">
+    <!-- Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="bg-cream rounded-xl p-4">
+        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">Total Products</p>
+        <p id="statTotal" class="font-display text-3xl mt-1">0</p>
+      </div>
+      <div class="bg-cream rounded-xl p-4">
+        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">In Stock</p>
+        <p id="statStock" class="font-display text-3xl mt-1">0</p>
+      </div>
+      <div class="bg-cream rounded-xl p-4">
+        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">Categories</p>
+        <p id="statCats" class="font-display text-3xl mt-1">0</p>
+      </div>
+      <div class="bg-cream rounded-xl p-4">
+        <p class="text-[10px] tracking-[0.15em] uppercase text-muted">Avg Price</p>
+        <p id="statAvg" class="font-display text-3xl mt-1">$0</p>
+      </div>
+    </div>
+
+    <!-- Add / Edit form -->
+    <div class="bg-cream rounded-2xl p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="formTitle" class="font-display text-2xl">Add New Product</h2>
+        <button id="cancelEditBtn" class="hidden text-xs text-muted underline">Cancel edit</button>
+      </div>
+      <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <input type="hidden" id="productId"/>
+        <div class="md:col-span-2">
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Product Name *</label>
+          <input id="pName" required type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="e.g. Archetype 01 Sneaker"/>
+        </div>
+        <div>
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Category *</label>
+          <select id="pCategory" required class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold">
+            <option value="shoes">Shoes</option>
+            <option value="bags">Bags</option>
+            <option value="accessories">Accessories</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Price (USD) *</label>
+          <input id="pPrice" required type="number" step="0.01" min="0" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="220"/>
+        </div>
+        <div class="md:col-span-2">
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Description</label>
+          <textarea id="pDesc" rows="2" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="Short product description..."></textarea>
+        </div>
+        <div>
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Badge (optional)</label>
+          <input id="pBadge" type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="e.g. Bestseller, New"/>
+        </div>
+        <div class="flex items-end gap-3">
+          <label class="flex items-center gap-2 text-sm">
+            <input id="pStock" type="checkbox" checked class="accent-gold w-4 h-4"/>
+            In Stock
+          </label>
+        </div>
+        <div class="md:col-span-2">
+          <label class="text-[11px] tracking-[0.12em] uppercase font-semibold text-muted">Product Image</label>
+          <input id="pImageFile" type="file" accept="image/*" class="w-full mt-1 text-sm"/>
+          <p class="text-xs text-muted mt-1">Or paste image URL:</p>
+          <input id="pImageUrl" type="url" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold" placeholder="https://..."/>
+          <div id="imagePreview" class="mt-2 hidden">
+            <img id="imagePreviewImg" class="h-24 w-24 object-cover rounded-lg border border-black/10"/>
+          </div>
+        </div>
+        <div class="md:col-span-2 flex gap-2">
+          <button type="submit" id="saveBtn" class="flex-1 bg-ink text-white text-[11px] tracking-[0.15em] uppercase py-3.5 rounded hover:bg-gold transition font-semibold flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-base">save</span>
+            <span id="saveBtnText">Save Product</span>
+          </button>
+        </div>
+        <p id="formMsg" class="md:col-span-2 hidden text-sm"></p>
+      </form>
+    </div>
+
+    <!-- Products list -->
+    <div class="bg-cream rounded-2xl p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-display text-2xl">All Products</h2>
+        <input id="adminSearch" type="text" placeholder="Filter..." class="bg-white border border-black/10 px-3 py-2 rounded-lg text-sm w-40 focus:outline-none focus:ring-1 focus:ring-gold"/>
+      </div>
+      <div id="adminList" class="space-y-2">
+        <p class="text-center text-muted text-sm py-8">Loading…</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-ink text-white text-sm px-4 py-2.5 rounded-lg opacity-0 pointer-events-none transition-opacity z-[100]"></div>
+
+<script src="./supabase-config.js"></script>
+<script>
+const ADMIN_EMAIL = "dben61168@gmail.com";
+const ADMIN_PASSWORD = "sammyh";
+const SESSION_KEY = "sammyh_admin_session";
+
+const $ = (s) => document.querySelector(s);
+const toastEl = $("#toast");
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.style.opacity = "1";
+  clearTimeout(toastEl._t);
+  toastEl._t = setTimeout(() => (toastEl.style.opacity = "0"), 2200);
+}
+const money = (n) => "$" + Number(n || 0).toFixed(2);
+
+/* ---------- AUTH ---------- */
+function showDashboard() {
+  $("#loginScreen").classList.add("hidden");
+  $("#dashboard").classList.remove("hidden");
+  loadAdminProducts();
+}
+function logout() {
+  localStorage.removeItem(SESSION_KEY);
+  location.reload();
+}
+if (localStorage.getItem(SESSION_KEY) === "ok") showDashboard();
+
+$("#loginForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = $("#email").value.trim();
+  const pass = $("#password").value;
+  if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
+    localStorage.setItem(SESSION_KEY, "ok");
+    showDashboard();
+  } else {
+    const err = $("#loginError");
+    err.textContent = "Invalid email or password.";
+    err.classList.remove("hidden");
+  }
+});
+$("#logoutBtn").addEventListener("click", logout);
+
+/* ---------- PRODUCT CRUD ---------- */
+let products = [];
+let editingId = null;
+let filtered = [];
+
+async function loadAdminProducts() {
+  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
+  const { data, error } = await window.db.from("products").select("*").order("created_at", { ascending: false });
+  if (error) {
+    $("#adminList").innerHTML = `<p class="text-center text-red-600 text-sm py-8">${error.message}</p>`;
+    return;
+  }
+  products = data || [];
+  renderAdminList();
+  updateStats();
+}
+
+function updateStats() {
+  $("#statTotal").textContent = products.length;
+  $("#statStock").textContent = products.filter((p) => p.in_stock !== false).length;
+  $("#statCats").textContent = new Set(products.map((p) => p.category)).size;
+  const avg = products.length ? products.reduce((s, p) => s + Number(p.price), 0) / products.length : 0;
+  $("#statAvg").textContent = money(avg).replace(".00", "");
+}
+
+function renderAdminList() {
+  const q = ($("#adminSearch").value || "").toLowerCase();
+  filtered = products.filter((p) => !q || p.name?.toLowerCase().includes(q));
+  if (!filtered.length) {
+    $("#adminList").innerHTML = `<p class="text-center text-muted text-sm py-8">No products yet. Add one above.</p>`;
+    return;
+  }
+  $("#adminList").innerHTML = filtered
+    .map(
+      (p) => `
+    <div class="flex items-center gap-3 bg-white rounded-lg p-2 border border-black/5">
+      <div class="w-14 h-14 bg-sand rounded overflow-hidden shrink-0">
+        ${p.image_url ? `<img src="${p.image_url}" class="w-full h-full object-cover"/>` : `<div class="w-full h-full flex items-center justify-center text-muted"><span class="material-symbols-outlined text-xl">image</span></div>`}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-sm truncate">${escapeHtml(p.name)}</p>
+        <p class="text-xs text-muted">${money(p.price)} · ${p.category} ${p.in_stock === false ? "· <span class=text-red-600>Out of stock</span>" : ""}</p>
+      </div>
+      <div class="flex gap-1">
+        <button class="edit-btn p-2 rounded hover:bg-sand text-muted hover:text-ink" data-id="${p.id}"><span class="material-symbols-outlined text-base">edit</span></button>
+        <button class="del-btn p-2 rounded hover:bg-red-50 text-muted hover:text-red-600" data-id="${p.id}"><span class="material-symbols-outlined text-base">delete</span></button>
+      </div>
+    </div>`
+    )
+    .join("");
+
+  document.querySelectorAll(".edit-btn").forEach((b) => b.addEventListener("click", () => startEdit(b.dataset.id)));
+  document.querySelectorAll(".del-btn").forEach((b) => b.addEventListener("click", () => deleteProduct(b.dataset.id)));
+}
+
+function escapeHtml(str = "") {
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function startEdit(id) {
+  const p = products.find((x) => x.id === id);
+  if (!p) return;
+  editingId = id;
+  $("#productId").value = id;
+  $("#pName").value = p.name || "";
+  $("#pCategory").value = p.category || "shoes";
+  $("#pPrice").value = p.price || 0;
+  $("#pDesc").value = p.description || "";
+  $("#pBadge").value = p.badge || "";
+  $("#pStock").checked = p.in_stock !== false;
+  $("#pImageUrl").value = p.image_url || "";
+  $("#pImageFile").value = "";
+  if (p.image_url) {
+    $("#imagePreview").classList.remove("hidden");
+    $("#imagePreviewImg").src = p.image_url;
+  } else {
+    $("#imagePreview").classList.add("hidden");
+  }
+  $("#formTitle").textContent = "Edit Product";
+  $("#saveBtnText").textContent = "Update Product";
+  $("#cancelEditBtn").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+$("#cancelEditBtn").addEventListener("click", resetForm);
+
+function resetForm() {
+  editingId = null;
+  $("#productForm").reset();
+  $("#productId").value = "";
+  $("#pStock").checked = true;
+  $("#imagePreview").classList.add("hidden");
+  $("#formTitle").textContent = "Add New Product";
+  $("#saveBtnText").textContent = "Save Product";
+  $("#cancelEditBtn").classList.add("hidden");
+}
+
+async function uploadImage(file) {
+  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
+  const ext = file.name.split(".").pop();
+  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const { error } = await window.db.storage.from("product-images").upload(fileName, file);
+  if (error) throw error;
+  const { data } = window.db.storage.from("product-images").getPublicUrl(fileName);
+  return data.publicUrl;
+}
+
+$("#pImageFile").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    $("#imagePreview").classList.remove("hidden");
+    $("#imagePreviewImg").src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+$("#productForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const msg = $("#formMsg");
+  msg.classList.add("hidden");
+
+  const btn = $("#saveBtn");
+  btn.disabled = true;
+  btn.style.opacity = "0.6";
+
+  try {
+    let imageUrl = $("#pImageUrl").value.trim();
+    const file = $("#pImageFile").files[0];
+    if (file) {
+      btn.querySelector("span:last-child").textContent = "Uploading image...";
+      imageUrl = await uploadImage(file);
+    }
+
+    const payload = {
+      name: $("#pName").value.trim(),
+      category: $("#pCategory").value,
+      price: parseFloat($("#pPrice").value) || 0,
+      description: $("#pDesc").value.trim(),
+      badge: $("#pBadge").value.trim() || null,
+      in_stock: $("#pStock").checked,
+      image_url: imageUrl || null,
+    };
+
+    let res;
+    if (editingId) {
+      res = await window.db.from("products").update(payload).eq("id", editingId);
+    } else {
+      res = await window.db.from("products").insert(payload);
+    }
+
+    if (res.error) throw res.error;
+
+    toast(editingId ? "Product updated ✓" : "Product created ✓");
+    resetForm();
+    await loadAdminProducts();
+  } catch (err) {
+    msg.textContent = "Error: " + err.message;
+    msg.className = "md:col-span-2 text-sm text-red-600";
+  } finally {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.querySelector("span:last-child").textContent = editingId ? "Update Product" : "Save Product";
+  }
+});
+
+async function deleteProduct(id) {
+  if (!confirm("Delete this product? This cannot be undone.")) return;
+  const { error } = await window.db.from("products").delete().eq("id", id);
+  if (error) return toast("Error: " + error.message);
+  toast("Product deleted");
+  await loadAdminProducts();
+}
+
+$("#adminSearch").addEventListener("input", renderAdminList);
+</script>
+</body>
+</html>
