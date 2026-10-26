@@ -184,19 +184,34 @@ tailwind.config = {
       <div class="max-w-7xl mx-auto">
         
         <!-- Filter Bar -->
-        <div class="bg-sand rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h2 class="font-display text-2xl">Our Collection</h2>
-            <div id="activeFilter" class="text-xs text-muted hidden mt-1">Filtering by: <span class="font-semibold text-ink capitalize"></span></div>
-          </div>
+        <div class="bg-sand rounded-xl p-4 mb-6 flex flex-col gap-4">
           
-          <!-- Price Range Inputs -->
-          <div class="flex items-center gap-2 w-full md:w-auto">
-            <span class="text-xs font-semibold uppercase tracking-wider text-muted whitespace-nowrap">Budget (₦)</span>
-            <input id="minPrice" type="number" placeholder="Min" class="w-20 sm:w-28 bg-white border border-black/10 px-2 py-2 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
-            <span class="text-muted">-</span>
-            <input id="maxPrice" type="number" placeholder="Max" class="w-20 sm:w-28 bg-white border border-black/10 px-2 py-2 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
-            <button id="clearPriceBtn" class="text-xs text-muted hover:text-red-600 underline hidden px-1">Clear</button>
+          <!-- Top Row: Price -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-black/5 pb-4">
+            <div>
+              <h2 class="font-display text-2xl">Our Collection</h2>
+              <div id="activeFilter" class="text-xs text-muted hidden mt-1">Filtering by: <span class="font-semibold text-ink capitalize"></span></div>
+            </div>
+            
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <span class="text-xs font-semibold uppercase tracking-wider text-muted whitespace-nowrap">Budget (₦)</span>
+              <input id="minPrice" type="number" placeholder="Min" class="w-20 sm:w-28 bg-white border border-black/10 px-2 py-2 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+              <span class="text-muted">-</span>
+              <input id="maxPrice" type="number" placeholder="Max" class="w-20 sm:w-28 bg-white border border-black/10 px-2 py-2 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+              <button id="clearPriceBtn" class="text-xs text-muted hover:text-red-600 underline hidden px-1">Clear</button>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Product Type Pills (NEW) -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 hide-scroll">
+            <span class="text-xs font-semibold uppercase tracking-wider text-muted whitespace-nowrap pr-1">Type:</span>
+            <button data-type="all" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition ring-2 ring-gold">All</button>
+            <button data-type="heels" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition">Heels</button>
+            <button data-type="womens-shoes" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition">Women's Shoes</button>
+            <button data-type="mens-shoes" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition">Men's Shoes</button>
+            <button data-type="canvas" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition">Canvas / Sneakers</button>
+            <button data-type="sandals" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition">Sandals</button>
+            <button data-type="bags" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition">Bags</button>
           </div>
         </div>
 
@@ -369,6 +384,7 @@ tailwind.config = {
 let allProducts = [];
 let filteredProducts = [];
 let activeCategory = "all";
+let activeType = "all"; // NEW: Tracks the sub-category
 let cart = JSON.parse(localStorage.getItem("sammyh_cart") || "[]");
 const WHATSAPP_NUMBER = "2347039898580";
 let currentPage = 1;
@@ -487,7 +503,7 @@ async function loadProducts() {
   applyFilterAndSearch();
 }
 
-// UPDATED FILTER LOGIC TO INCLUDE PRICE RANGE
+// UPDATED FILTER LOGIC (Category + Type + Price + Search)
 function applyFilterAndSearch() {
   const q = (($("#searchDesktop").value || "") + " " + ($("#searchMobile").value || "")).trim().toLowerCase();
   const minP = parseFloat($("#minPrice").value) || 0;
@@ -495,13 +511,13 @@ function applyFilterAndSearch() {
 
   filteredProducts = allProducts.filter((p) => {
     const matchCat = activeCategory === "all" || p.category === activeCategory;
+    const matchType = activeType === "all" || p.product_type === activeType;
     const matchQ = !q || p.name?.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q);
     
-    // Price range match
     const price = Number(p.price);
     const matchPrice = price >= minP && price <= maxP;
 
-    return matchCat && matchQ && matchPrice;
+    return matchCat && matchType && matchQ && matchPrice;
   });
   
   currentPage = 1;
@@ -511,6 +527,7 @@ function applyFilterAndSearch() {
   const af = $("#activeFilter");
   let filterText = [];
   if (activeCategory !== "all") filterText.push(activeCategory);
+  if (activeType !== "all") filterText.push(activeType.replace('-', ' '));
   if (minP > 0 || maxP < Infinity) filterText.push(`₦${minP.toLocaleString()} - ${maxP === Infinity ? 'Any' : '₦'+maxP.toLocaleString()}`);
   
   if (filterText.length > 0) {
@@ -525,7 +542,7 @@ function applyFilterAndSearch() {
 
 function renderProducts() {
   if (!filteredProducts.length) {
-    grid.innerHTML = `<div class="col-span-full text-center py-16"><span class="material-symbols-outlined text-4xl text-muted">inventory_2</span><p class="mt-3 text-sm text-muted">No products found in this range.</p></div>`;
+    grid.innerHTML = `<div class="col-span-full text-center py-16"><span class="material-symbols-outlined text-4xl text-muted">inventory_2</span><p class="mt-3 text-sm text-muted">No products found matching your filters.</p></div>`;
     pagination.classList.add("hidden");
     return;
   }
@@ -566,7 +583,7 @@ function loadProductDetail(id) {
   if (!p) return;
 
   $("#detailName").textContent = p.name;
-  $("#detailCategory").textContent = p.category;
+  $("#detailCategory").textContent = p.product_type ? p.product_type.replace('-', ' ') : p.category;
   $("#detailPrice").textContent = money(p.price);
   $("#detailDesc").textContent = p.description || "No description available.";
 
@@ -703,13 +720,13 @@ let searchTimer;
 });
 
 /* =========================================================
-   PRICE FILTER LISTENERS (NEW)
+   PRICE FILTER LISTENERS
 ========================================================= */
 let priceTimer;
 ["#minPrice", "#maxPrice"].forEach(sel => {
   $(sel).addEventListener("input", () => {
     clearTimeout(priceTimer);
-    priceTimer = setTimeout(applyFilterAndSearch, 400); // Small delay so it doesn't lag while typing
+    priceTimer = setTimeout(applyFilterAndSearch, 400);
   });
 });
 
@@ -719,11 +736,40 @@ $("#clearPriceBtn").addEventListener("click", () => {
   applyFilterAndSearch();
 });
 
+/* =========================================================
+   TYPE PILL LISTENERS (NEW)
+========================================================= */
+document.querySelectorAll(".type-pill").forEach(btn => {
+  btn.addEventListener("click", () => {
+    activeType = btn.dataset.type;
+    
+    // Reset styling
+    document.querySelectorAll(".type-pill").forEach(b => b.classList.remove("ring-2", "ring-gold"));
+    btn.classList.add("ring-2", "ring-gold");
+    
+    applyFilterAndSearch();
+  });
+});
+
 document.querySelectorAll(".cat-card").forEach((btn) => {
   btn.addEventListener("click", () => {
     activeCategory = btn.dataset.cat;
+    
+    // Reset main category styling
     document.querySelectorAll(".cat-card").forEach((b) => b.classList.remove("ring-2","ring-gold"));
     btn.classList.add("ring-2","ring-gold");
+    
+    // If they click a main category like "Bags", reset the sub-type so it doesn't conflict
+    if(activeCategory === "bags") {
+      activeType = "bags";
+      document.querySelectorAll(".type-pill").forEach(b => b.classList.remove("ring-2","ring-gold"));
+      document.querySelector('.type-pill[data-type="bags"]').classList.add("ring-2","ring-gold");
+    } else if (activeCategory === "all") {
+      activeType = "all";
+      document.querySelectorAll(".type-pill").forEach(b => b.classList.remove("ring-2","ring-gold"));
+      document.querySelector('.type-pill[data-type="all"]').classList.add("ring-2","ring-gold");
+    }
+
     applyFilterAndSearch();
     document.querySelector("#shop").scrollIntoView({ behavior: "smooth" });
   });
