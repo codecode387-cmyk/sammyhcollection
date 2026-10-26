@@ -83,9 +83,7 @@ tailwind.config = {
       </div>
       <div class="bg-cream rounded-xl p-6 border border-black/5">
         <h2 class="font-semibold text-lg mb-4">Recent Activity</h2>
-        <div id="recentActivity" class="space-y-2 text-sm">
-          <!-- Injected -->
-        </div>
+        <div id="recentActivity" class="space-y-2 text-sm"></div>
       </div>
     </div>
 
@@ -101,30 +99,50 @@ tailwind.config = {
         <h2 id="prodFormTitle" class="font-semibold text-lg mb-4">Add New Product</h2>
         <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <input type="hidden" id="productId"/>
+          
           <div class="md:col-span-2">
-            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Name</label>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Product Name</label>
             <input id="pName" required type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"/>
           </div>
+          
           <div>
-            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Category</label>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Main Category</label>
             <select id="pCategory" required class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm">
-              <option value="shoes">Shoes (Men/Ladies)</option>
+              <option value="shoes">Shoes</option>
               <option value="bags">Bags</option>
               <option value="accessories">Accessories</option>
             </select>
           </div>
+
+          <!-- NEW: SUB-CATEGORY / TYPE -->
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Specific Type</label>
+            <select id="pType" required class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm">
+              <option value="">Select type...</option>
+              <option value="heels">Heels</option>
+              <option value="womens-shoes">Women's Shoes</option>
+              <option value="mens-shoes">Men's Shoes</option>
+              <option value="canvas">Canvas / Sneakers</option>
+              <option value="sandals">Sandals</option>
+              <option value="bags">Bags</option>
+            </select>
+          </div>
+
           <div>
             <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Price (₦)</label>
             <input id="pPrice" required type="number" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"/>
           </div>
-          <div class="md:col-span-2">
-            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Description</label>
-            <textarea id="pDesc" rows="2" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"></textarea>
-          </div>
+
           <div>
             <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Badge (Optional)</label>
             <input id="pBadge" type="text" placeholder="e.g. Bestseller" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"/>
           </div>
+
+          <div class="md:col-span-2">
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Description</label>
+            <textarea id="pDesc" rows="2" class="w-full mt-1 bg-white border border-black/10 px-3 py-2 rounded-lg text-sm"></textarea>
+          </div>
+
           <div class="flex items-end pb-2">
             <label class="flex items-center gap-2 text-sm font-semibold"><input id="pStock" type="checkbox" checked class="accent-gold w-4 h-4"/> In Stock</label>
           </div>
@@ -139,6 +157,7 @@ tailwind.config = {
               <input type="file" id="img5" accept="image/*" class="w-full text-xs"/><img id="prev5" class="h-12 w-full object-cover rounded hidden"/>
             </div>
           </div>
+
           <div class="md:col-span-2 mt-2">
             <button type="submit" id="saveBtn" class="w-full bg-ink text-white text-xs uppercase py-3 rounded hover:bg-gold transition font-semibold">Save Product</button>
           </div>
@@ -151,7 +170,6 @@ tailwind.config = {
     <!-- ================= BLOG TAB ================= -->
     <div id="tab-blog" class="hidden space-y-6">
       <h1 class="font-display text-3xl mb-2">Blog Manager</h1>
-      
       <div class="bg-cream rounded-xl p-5 border border-black/5">
         <h2 class="font-semibold text-lg mb-4">Create New Post</h2>
         <form id="blogForm" class="space-y-3">
@@ -170,7 +188,6 @@ tailwind.config = {
           <button type="submit" id="bSaveBtn" class="bg-ink text-white text-xs uppercase px-6 py-3 rounded hover:bg-gold transition font-semibold">Publish Post</button>
         </form>
       </div>
-
       <div id="adminBlogList" class="space-y-2"></div>
     </div>
 
@@ -191,11 +208,10 @@ function toast(msg) { toastEl.textContent = msg; toastEl.style.opacity = "1"; cl
 const money = (n) => "₦" + Number(n || 0).toLocaleString("en-NG");
 const escapeHtml = (str = "") => String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-/* ---------- AUTH & TABS ---------- */
 function showDashboard() {
   $("#loginScreen").classList.add("hidden");
   $("#dashboard").classList.remove("hidden");
-  switchTab('analytics'); // Default tab
+  switchTab('analytics');
 }
 if (localStorage.getItem(SESSION_KEY) === "ok") showDashboard();
 
@@ -214,11 +230,8 @@ $("#logoutBtn").addEventListener("click", () => { localStorage.removeItem(SESSIO
 function switchTab(tab) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("bg-white/10"));
   document.querySelectorAll("[id^='tab-']").forEach(d => d.classList.add("hidden"));
-  
-  // Find button and activate
   const btn = Array.from(document.querySelectorAll(".tab-btn")).find(b => b.getAttribute("onclick").includes(tab));
   if (btn) btn.classList.add("bg-white/10");
-  
   $(`#tab-${tab}`).classList.remove("hidden");
 
   if (tab === 'analytics') loadAnalytics();
@@ -229,19 +242,14 @@ function switchTab(tab) {
 /* ---------- ANALYTICS ---------- */
 async function loadAnalytics() {
   await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
-  
   const { data, error } = await window.db.from("analytics").select("*").order("created_at", { ascending: false });
   if (error) return console.error(error);
-
   const visits = data.filter(d => d.event_type === 'visit' && d.page === 'home').length;
   const productViews = data.filter(d => d.event_type === 'product_view').length;
-  
   $("#statVisits").textContent = visits;
   $("#statProductViews").textContent = productViews;
-
   const { count } = await window.db.from("products").select("*", { count: 'exact', head: true });
   $("#statTotalProducts").textContent = count || 0;
-
   $("#recentActivity").innerHTML = data.slice(0, 10).map(d => `
     <div class="flex justify-between items-center border-b border-black/5 py-2">
       <span class="font-medium capitalize">${d.event_type.replace('_', ' ')}</span>
@@ -273,7 +281,7 @@ function renderAdminProducts() {
       </div>
       <div class="flex-1 min-w-0">
         <p class="font-semibold text-sm truncate">${escapeHtml(p.name)}</p>
-        <p class="text-xs text-muted">${money(p.price)} · ${p.category}</p>
+        <p class="text-xs text-muted">${money(p.price)} · ${p.category} ${p.product_type ? `(${p.product_type})` : ''}</p>
       </div>
       <button onclick="startEditProduct('${p.id}')" class="p-2 hover:bg-sand rounded"><span class="material-symbols-outlined text-base">edit</span></button>
       <button onclick="deleteProduct('${p.id}')" class="p-2 hover:bg-red-50 text-red-600 rounded"><span class="material-symbols-outlined text-base">delete</span></button>
@@ -289,6 +297,7 @@ function startEditProduct(id) {
   $("#productId").value = id;
   $("#pName").value = p.name;
   $("#pCategory").value = p.category;
+  $("#pType").value = p.product_type || "";
   $("#pPrice").value = p.price;
   $("#pDesc").value = p.description || "";
   $("#pBadge").value = p.badge || "";
@@ -337,15 +346,18 @@ $("#productForm").addEventListener("submit", async (e) => {
       if (file) { newImages.push(await uploadImage(file)); }
       else if (existingImages[i-1]) { newImages.push(existingImages[i-1]); }
     }
+    
     const payload = {
       name: $("#pName").value.trim(),
       category: $("#pCategory").value,
+      product_type: $("#pType").value,
       price: parseFloat($("#pPrice").value) || 0,
       description: $("#pDesc").value.trim(),
       badge: $("#pBadge").value.trim() || null,
       in_stock: $("#pStock").checked,
       images: newImages,
     };
+    
     let res = editingId ? await window.db.from("products").update(payload).eq("id", editingId) : await window.db.from("products").insert(payload);
     if (res.error) throw res.error;
     toast("Product saved!");
@@ -382,8 +394,7 @@ $("#blogForm").addEventListener("submit", async (e) => {
   try {
     let imageUrl = null;
     const file = $("#bImg").files[0];
-    if (file) imageUrl = await uploadImage(file); // Reusing the same storage bucket
-    
+    if (file) imageUrl = await uploadImage(file);
     const { error } = await window.db.from("blogs").insert([{
       title: $("#bTitle").value.trim(),
       content: $("#bContent").value.trim(),
