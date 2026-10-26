@@ -41,7 +41,6 @@ tailwind.config = {
   @keyframes fade { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
   .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   
-  /* Hide number input spinners */
   input[type=number]::-webkit-inner-spin-button, 
   input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
   input[type=number] { -moz-appearance: textfield; }
@@ -71,10 +70,9 @@ tailwind.config = {
 
       <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-[11px] tracking-[0.15em] uppercase">
         <a href="#" onclick="showPage('home')" class="hover:text-gold transition">Shop</a>
+        <a href="#" onclick="showPage('about')" class="hover:text-gold transition">About</a>
         <a href="#" onclick="showPage('blog')" class="hover:text-gold transition">Blog</a>
-        <a href="#categories" onclick="showPage('home')" class="hover:text-gold transition">Categories</a>
-        <a href="#about" onclick="showPage('home')" class="hover:text-gold transition">About</a>
-        <a href="#contact" onclick="showPage('home')" class="hover:text-gold transition">Contact</a>
+        <a href="#" onclick="showPage('contact')" class="hover:text-gold transition">Contact</a>
       </nav>
 
       <div class="flex items-center gap-1 sm:gap-2 ml-auto md:ml-0">
@@ -110,10 +108,9 @@ tailwind.config = {
   </div>
   <nav class="flex flex-col gap-4 text-sm font-semibold tracking-wider uppercase">
     <a href="#" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">Shop</a>
+    <a href="#" onclick="showPage('about'); closeMobileMenu();" class="hover:text-gold transition">About</a>
     <a href="#" onclick="showPage('blog'); closeMobileMenu();" class="hover:text-gold transition">Blog</a>
-    <a href="#categories" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">Categories</a>
-    <a href="#about" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">About</a>
-    <a href="#contact" onclick="showPage('home'); closeMobileMenu();" class="hover:text-gold transition">Contact</a>
+    <a href="#" onclick="showPage('contact'); closeMobileMenu();" class="hover:text-gold transition">Contact</a>
   </nav>
 </aside>
 
@@ -182,17 +179,12 @@ tailwind.config = {
     <!-- PRODUCT GRID & FILTERS -->
     <section id="shop" class="px-3 md:px-6 py-10 md:py-14">
       <div class="max-w-7xl mx-auto">
-        
-        <!-- Filter Bar -->
         <div class="bg-sand rounded-xl p-4 mb-6 flex flex-col gap-4">
-          
-          <!-- Top Row: Price -->
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-black/5 pb-4">
             <div>
               <h2 class="font-display text-2xl">Our Collection</h2>
               <div id="activeFilter" class="text-xs text-muted hidden mt-1">Filtering by: <span class="font-semibold text-ink capitalize"></span></div>
             </div>
-            
             <div class="flex items-center gap-2 w-full sm:w-auto">
               <span class="text-xs font-semibold uppercase tracking-wider text-muted whitespace-nowrap">Budget (₦)</span>
               <input id="minPrice" type="number" placeholder="Min" class="w-20 sm:w-28 bg-white border border-black/10 px-2 py-2 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
@@ -201,8 +193,6 @@ tailwind.config = {
               <button id="clearPriceBtn" class="text-xs text-muted hover:text-red-600 underline hidden px-1">Clear</button>
             </div>
           </div>
-
-          <!-- Bottom Row: Product Type Pills (NEW) -->
           <div class="flex items-center gap-2 overflow-x-auto pb-1 hide-scroll">
             <span class="text-xs font-semibold uppercase tracking-wider text-muted whitespace-nowrap pr-1">Type:</span>
             <button data-type="all" class="type-pill bg-white border border-black/10 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap hover:border-gold transition ring-2 ring-gold">All</button>
@@ -228,54 +218,130 @@ tailwind.config = {
         </div>
       </div>
     </section>
+  </div>
 
-    <!-- ABOUT & CONTACT -->
-    <section id="about" class="px-3 md:px-6 py-10">
-      <div class="max-w-7xl mx-auto bg-ink text-white rounded-2xl p-6 md:p-12">
-        <div class="grid md:grid-cols-2 gap-8 items-center">
+  <!-- ================= ABOUT US PAGE ================= -->
+  <div id="page-about" class="hidden px-3 md:px-6 py-6 max-w-5xl mx-auto">
+    <!-- Hero Section -->
+    <div class="text-center mb-12 fade-in">
+      <span class="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold">About SammyH Collections</span>
+      <h1 class="font-display text-4xl md:text-6xl mt-2 mb-4">Our Story</h1>
+      <p class="text-muted max-w-2xl mx-auto text-lg leading-relaxed">
+        We are a premier destination for luxury footwear and accessories in Nigeria. We believe that style is personal, quality is non-negotiable, and every step should be taken in confidence.
+      </p>
+    </div>
+
+    <!-- Story Grid -->
+    <div class="grid md:grid-cols-2 gap-8 items-center mb-16">
+      <div class="bg-sand rounded-2xl aspect-square overflow-hidden flex items-center justify-center p-8">
+        <img src="./logo.png" alt="SammyH Logo" class="w-full h-full object-contain"/>
+      </div>
+      <div class="space-y-4 text-muted leading-relaxed">
+        <h2 class="font-display text-3xl text-ink">Curated for Excellence</h2>
+        <p>
+          Founded with a simple vision: to bring the world's most elegant footwear and bags to Lagos. We noticed a gap in the market for authentic, high-quality pieces that didn't compromise on comfort or style.
+        </p>
+        <p>
+          Every piece in our collection is hand-picked. From the sharpest men's Oxfords to the most delicate ladies' heels, we ensure that every item meets our strict standards of craftsmanship.
+        </p>
+        <p>
+          We don't manufacture; we curate. We travel, we test, and we select only the best so that when you shop with us, you're investing in a piece that will last.
+        </p>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div class="grid md:grid-cols-3 gap-4 mb-16">
+      <div class="bg-cream border border-black/5 rounded-xl p-6 text-center">
+        <span class="material-symbols-outlined text-gold text-4xl mb-3">verified</span>
+        <h3 class="font-semibold mb-2">Authentic Quality</h3>
+        <p class="text-sm text-muted">Only genuine, premium materials make it to our shelves.</p>
+      </div>
+      <div class="bg-cream border border-black/5 rounded-xl p-6 text-center">
+        <span class="material-symbols-outlined text-gold text-4xl mb-3">local_shipping</span>
+        <h3 class="font-semibold mb-2">Nationwide Delivery</h3>
+        <p class="text-sm text-muted">From Lagos to Abuja, we deliver securely to your doorstep.</p>
+      </div>
+      <div class="bg-cream border border-black/5 rounded-xl p-6 text-center">
+        <span class="material-symbols-outlined text-gold text-4xl mb-3">support_agent</span>
+        <h3 class="font-semibold mb-2">Personal Service</h3>
+        <p class="text-sm text-muted">Our team is always available via WhatsApp to assist you.</p>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="bg-ink text-white rounded-2xl p-8 md:p-12 text-center">
+      <h2 class="font-display text-3xl mb-4">Experience the Difference</h2>
+      <p class="text-white/70 mb-6 max-w-lg mx-auto">Visit our physical store in Iyana-Ipaja or browse our online collection today.</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <button onclick="showPage('shop')" class="bg-gold text-ink font-semibold text-xs uppercase tracking-widest px-8 py-3 rounded hover:bg-white transition">Shop Now</button>
+        <button onclick="showPage('contact')" class="bg-white/10 text-white font-semibold text-xs uppercase tracking-widest px-8 py-3 rounded hover:bg-white/20 transition">Contact Us</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CONTACT US PAGE ================= -->
+  <div id="page-contact" class="hidden px-3 md:px-6 py-6 max-w-5xl mx-auto">
+    <div class="text-center mb-10 fade-in">
+      <span class="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold">Get in Touch</span>
+      <h1 class="font-display text-4xl md:text-6xl mt-2 mb-4">Contact Us</h1>
+      <p class="text-muted">Have a question about a product? Need a size guide? We're here to help.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Contact Form -->
+      <div class="bg-cream border border-black/5 rounded-2xl p-6 md:p-8">
+        <h2 class="font-display text-2xl mb-4">Send a Message</h2>
+        <form id="contactForm" class="space-y-3">
           <div>
-            <span class="text-[10px] tracking-[0.2em] uppercase text-gold font-semibold">Our Promise</span>
-            <h2 class="font-display text-3xl md:text-4xl mt-2 mb-4 leading-tight">Quality You Can Trust</h2>
-            <p class="text-white/70 text-sm md:text-base leading-relaxed mb-6">
-              We carefully curate every piece in our collection. From elegant ladies' heels to durable men's shoes and luxury bags, we ensure you get the best quality for your style.
-            </p>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Your Name</label>
+            <input required id="cName" type="text" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
           </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-white/5 rounded-lg p-4">
-              <span class="material-symbols-outlined text-gold text-2xl mb-2">verified</span>
-              <h4 class="font-semibold text-sm mb-1">Premium Quality</h4>
-            </div>
-            <div class="bg-white/5 rounded-lg p-4">
-              <span class="material-symbols-outlined text-gold text-2xl mb-2">local_shipping</span>
-              <h4 class="font-semibold text-sm mb-1">Fast Delivery</h4>
-            </div>
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Phone Number</label>
+            <input required id="cPhone" type="tel" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
           </div>
-        </div>
+          <div>
+            <label class="text-[11px] uppercase tracking-widest text-muted font-semibold">Message</label>
+            <textarea required id="cMessage" rows="4" class="w-full mt-1 bg-white border border-black/10 px-3 py-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-[#25D366] text-white text-[11px] tracking-[0.15em] uppercase py-4 rounded-lg hover:bg-[#1ebe5b] transition font-semibold flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-base">chat</span> Send via WhatsApp
+          </button>
+        </form>
       </div>
-    </section>
 
-    <section id="contact" class="px-3 md:px-6 py-10">
-      <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-4">
-        <div class="bg-sand rounded-xl p-6">
-          <span class="material-symbols-outlined text-gold text-3xl mb-3">location_on</span>
-          <h4 class="font-semibold uppercase tracking-wide text-sm mb-2">Visit Us</h4>
-          <p class="text-sm text-muted leading-relaxed">11, Ipaja New Road,<br/>Iyana-Ipaja,<br/>Lagos State, Nigeria</p>
+      <!-- Contact Details -->
+      <div class="space-y-4">
+        <div class="bg-sand rounded-xl p-6 flex gap-4">
+          <span class="material-symbols-outlined text-gold text-3xl">location_on</span>
+          <div>
+            <h3 class="font-semibold mb-1">Visit Our Store</h3>
+            <p class="text-sm text-muted leading-relaxed">11, Ipaja New Road,<br/>Iyana-Ipaja,<br/>Lagos State, Nigeria.</p>
+          </div>
         </div>
-        <div class="bg-sand rounded-xl p-6">
-          <span class="material-symbols-outlined text-gold text-3xl mb-3">call</span>
-          <h4 class="font-semibold uppercase tracking-wide text-sm mb-2">Call / WhatsApp</h4>
-          <a href="https://wa.me/2347039898580" class="text-sm text-muted hover:text-ink transition block">+234 703 989 8580</a>
+        
+        <div class="bg-sand rounded-xl p-6 flex gap-4">
+          <span class="material-symbols-outlined text-gold text-3xl">call</span>
+          <div>
+            <h3 class="font-semibold mb-1">Call / WhatsApp</h3>
+            <a href="https://wa.me/2347039898580" class="text-sm text-muted hover:text-ink transition block">+234 703 989 8580</a>
+            <p class="text-xs text-muted mt-1">Mon - Sat, 9am - 7pm</p>
+          </div>
         </div>
-        <div class="bg-sand rounded-xl p-6">
-          <span class="material-symbols-outlined text-gold text-3xl mb-3">share</span>
-          <h4 class="font-semibold uppercase tracking-wide text-sm mb-2">Follow Us</h4>
-          <div class="flex flex-col gap-2">
-            <a href="https://www.instagram.com/sammyhcollections" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2"><span class="material-symbols-outlined text-base">photo_camera</span> Instagram</a>
-            <a href="https://www.facebook.com/obu.sammy.5" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2"><span class="material-symbols-outlined text-base">public</span> Facebook</a>
+
+        <div class="bg-sand rounded-xl p-6 flex gap-4">
+          <span class="material-symbols-outlined text-gold text-3xl">share</span>
+          <div>
+            <h3 class="font-semibold mb-1">Follow Us</h3>
+            <div class="flex flex-col gap-2 mt-2">
+              <a href="https://www.instagram.com/sammyhcollections" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2"><span class="material-symbols-outlined text-base">photo_camera</span> Instagram</a>
+              <a href="https://www.facebook.com/obu.sammy.5" target="_blank" class="text-sm text-muted hover:text-ink transition flex items-center gap-2"><span class="material-symbols-outlined text-base">public</span> Facebook</a>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 
   <!-- ================= BLOG PAGE ================= -->
@@ -384,7 +450,7 @@ tailwind.config = {
 let allProducts = [];
 let filteredProducts = [];
 let activeCategory = "all";
-let activeType = "all"; // NEW: Tracks the sub-category
+let activeType = "all";
 let cart = JSON.parse(localStorage.getItem("sammyh_cart") || "[]");
 const WHATSAPP_NUMBER = "2347039898580";
 let currentPage = 1;
@@ -435,10 +501,14 @@ async function trackEvent(type, page = 'home') {
    PAGE NAVIGATION
 ========================================================= */
 function showPage(page, productId = null) {
+  // Hide all pages
   $("#page-home").classList.add("hidden");
   $("#page-product").classList.add("hidden");
   $("#page-blog").classList.add("hidden");
+  $("#page-about").classList.add("hidden");
+  $("#page-contact").classList.add("hidden");
 
+  // Show requested page
   if (page === 'home') {
     $("#page-home").classList.remove("hidden");
     trackEvent('visit', 'home');
@@ -450,7 +520,14 @@ function showPage(page, productId = null) {
     $("#page-blog").classList.remove("hidden");
     loadBlogs();
     trackEvent('visit', 'blog');
+  } else if (page === 'about') {
+    $("#page-about").classList.remove("hidden");
+    trackEvent('visit', 'about');
+  } else if (page === 'contact') {
+    $("#page-contact").classList.remove("hidden");
+    trackEvent('visit', 'contact');
   }
+  
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -465,6 +542,22 @@ $("#mobileMenuBtn").addEventListener("click", () => {
 });
 $("#closeMobileMenu").addEventListener("click", closeMobileMenu);
 $("#mobileMenuOverlay").addEventListener("click", closeMobileMenu);
+
+/* =========================================================
+   CONTACT FORM (WHATSAPP)
+========================================================= */
+$("#contactForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = $("#cName").value;
+  const phone = $("#cPhone").value;
+  const message = $("#cMessage").value;
+
+  const text = `*📩 NEW MESSAGE — SammyH Collections*\n\n*Name:* ${name}\n*Phone:* ${phone}\n\n*Message:*\n${message}`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank");
+  
+  e.target.reset();
+  toast("Opening WhatsApp...");
+});
 
 /* =========================================================
    BLOGS
@@ -503,7 +596,6 @@ async function loadProducts() {
   applyFilterAndSearch();
 }
 
-// UPDATED FILTER LOGIC (Category + Type + Price + Search)
 function applyFilterAndSearch() {
   const q = (($("#searchDesktop").value || "") + " " + ($("#searchMobile").value || "")).trim().toLowerCase();
   const minP = parseFloat($("#minPrice").value) || 0;
@@ -513,17 +605,14 @@ function applyFilterAndSearch() {
     const matchCat = activeCategory === "all" || p.category === activeCategory;
     const matchType = activeType === "all" || p.product_type === activeType;
     const matchQ = !q || p.name?.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q);
-    
     const price = Number(p.price);
     const matchPrice = price >= minP && price <= maxP;
-
     return matchCat && matchType && matchQ && matchPrice;
   });
   
   currentPage = 1;
   renderProducts();
   
-  // Update Filtering Text
   const af = $("#activeFilter");
   let filterText = [];
   if (activeCategory !== "all") filterText.push(activeCategory);
@@ -719,9 +808,6 @@ let searchTimer;
   });
 });
 
-/* =========================================================
-   PRICE FILTER LISTENERS
-========================================================= */
 let priceTimer;
 ["#minPrice", "#maxPrice"].forEach(sel => {
   $(sel).addEventListener("input", () => {
@@ -736,17 +822,11 @@ $("#clearPriceBtn").addEventListener("click", () => {
   applyFilterAndSearch();
 });
 
-/* =========================================================
-   TYPE PILL LISTENERS (NEW)
-========================================================= */
 document.querySelectorAll(".type-pill").forEach(btn => {
   btn.addEventListener("click", () => {
     activeType = btn.dataset.type;
-    
-    // Reset styling
     document.querySelectorAll(".type-pill").forEach(b => b.classList.remove("ring-2", "ring-gold"));
     btn.classList.add("ring-2", "ring-gold");
-    
     applyFilterAndSearch();
   });
 });
@@ -754,12 +834,9 @@ document.querySelectorAll(".type-pill").forEach(btn => {
 document.querySelectorAll(".cat-card").forEach((btn) => {
   btn.addEventListener("click", () => {
     activeCategory = btn.dataset.cat;
-    
-    // Reset main category styling
     document.querySelectorAll(".cat-card").forEach((b) => b.classList.remove("ring-2","ring-gold"));
     btn.classList.add("ring-2","ring-gold");
     
-    // If they click a main category like "Bags", reset the sub-type so it doesn't conflict
     if(activeCategory === "bags") {
       activeType = "bags";
       document.querySelectorAll(".type-pill").forEach(b => b.classList.remove("ring-2","ring-gold"));
