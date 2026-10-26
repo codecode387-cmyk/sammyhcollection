@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Account · SammyH Collections</title>
+<link rel="icon" type="image/png" href="./favicon.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: { colors: { ink:"#0b0b0b", cream:"#fbf9f5", sand:"#f0eeea", gold:"#c9a24b", muted:"#6b6b6b" }, fontFamily: { display:['"Playfair Display"',"serif"], body:['"Hanken Grotesk"',"sans-serif"] } } }
+}
+</script>
+<style>.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }</style>
+</head>
+<body class="bg-cream font-body text-ink antialiased min-h-screen">
+
+<header class="bg-white border-b border-black/5 sticky top-0 z-30">
+  <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="./index.html" class="flex items-center gap-2">
+      <img src="./logo.png" alt="SammyH" class="h-9"/>
+      <span class="font-display text-lg hidden sm:inline">SammyH</span>
+    </a>
+    <div class="flex items-center gap-2">
+      <a href="./index.html" class="text-[10px] uppercase tracking-widest font-semibold px-3 py-2 rounded hover:bg-sand">Shop</a>
+      <button id="logoutBtn" class="text-[10px] uppercase tracking-widest font-semibold px-3 py-2 rounded bg-ink text-white hover:bg-gold transition">Logout</button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+  
+  <div class="bg-ink text-white rounded-2xl p-6 md:p-8">
+    <p class="text-[10px] uppercase tracking-widest text-gold font-semibold mb-1">Client Dashboard</p>
+    <h1 class="font-display text-3xl">Welcome back, <span id="userName">Friend</span>!</h1>
+    <p class="text-white/60 text-sm mt-1" id="userEmail"></p>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <!-- Profile Card -->
+    <div class="bg-white rounded-2xl p-6 border border-black/5">
+      <h2 class="font-display text-xl mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-gold">person</span> My Profile</h2>
+      <form id="profileForm" class="space-y-3">
+        <div>
+          <label class="text-[10px] uppercase tracking-widest text-muted font-semibold">Full Name</label>
+          <input id="pName" required type="text" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-widest text-muted font-semibold">Phone Number</label>
+          <input id="pPhone" type="tel" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"/>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-widest text-muted font-semibold">Default Delivery Address</label>
+          <textarea id="pAddress" rows="2" class="w-full mt-1 bg-cream border border-black/10 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gold"></textarea>
+        </div>
+        <button type="submit" class="bg-ink text-white text-[10px] uppercase tracking-widest px-5 py-2.5 rounded-lg hover:bg-gold transition font-semibold">Save Changes</button>
+      </form>
+    </div>
+
+    <!-- Stats -->
+    <div class="space-y-4">
+      <div class="bg-sand rounded-2xl p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-muted font-semibold">Total Orders</p>
+            <p id="statOrders" class="font-display text-3xl mt-1">0</p>
+          </div>
+          <span class="material-symbols-outlined text-gold text-4xl">shopping_bag</span>
+        </div>
+      </div>
+      <div class="bg-sand rounded-2xl p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-muted font-semibold">Total Spent</p>
+            <p id="statSpent" class="font-display text-3xl mt-1">₦0</p>
+          </div>
+          <span class="material-symbols-outlined text-gold text-4xl">payments</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order History -->
+  <div class="bg-white rounded-2xl p-6 border border-black/5">
+    <h2 class="font-display text-xl mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-gold">receipt_long</span> Order History</h2>
+    <div id="orderList" class="space-y-3">
+      <p class="text-center text-muted text-sm py-6">Loading orders...</p>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-ink text-white text-sm px-4 py-2.5 rounded-lg opacity-0 pointer-events-none transition-opacity z-[100]"></div>
+
+<script src="./supabase-config.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const toastEl = $("#toast");
+function toast(msg) { toastEl.textContent = msg; toastEl.style.opacity = "1"; clearTimeout(toastEl._t); toastEl._t = setTimeout(() => (toastEl.style.opacity = "0"), 2200); }
+const money = (n) => "₦" + Number(n || 0).toLocaleString("en-NG");
+
+let currentUser = null;
+
+async function init() {
+  await new Promise((r) => (window.db ? r() : window.addEventListener("supabase-ready", r, { once: true })));
+  
+  const { data: { session } } = await window.db.auth.getSession();
+  if (!session) { window.location.href = "./login.html"; return; }
+  
+  currentUser = session.user;
+  $("#userEmail").textContent = currentUser.email;
+  
+  // Load Profile
+  const { data: profile } = await window.db.from("profiles").select("*").eq("id", currentUser.id).single();
+  if (profile) {
+    $("#userName").textContent = profile.full_name || "Friend";
+    $("#pName").value = profile.full_name || "";
+    $("#pPhone").value = profile.phone || "";
+    $("#pAddress").value = profile.address || "";
+  }
+  
+  loadOrders();
+}
+
+async function loadOrders() {
+  const { data: orders, error } = await window.db.from("orders").select("*").order("created_at", { ascending: false });
+  
+  if (error || !orders || !orders.length) {
+    $("#orderList").innerHTML = `<p class="text-center text-muted text-sm py-6">You haven't placed any orders yet. <a href="./index.html" class="text-gold underline font-semibold">Start shopping</a>.</p>`;
+    $("#statOrders").textContent = "0";
+    $("#statSpent").textContent = "₦0";
+    return;
+  }
+
+  const totalSpent = orders.reduce((s, o) => s + Number(o.total), 0);
+  $("#statOrders").textContent = orders.length;
+  $("#statSpent").textContent = money(totalSpent);
+
+  $("#orderList").innerHTML = orders.map(o => `
+    <div class="border border-black/5 rounded-lg p-4">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <div>
+          <p class="text-xs text-muted">${new Date(o.created_at).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+          <p class="font-semibold text-sm">Order #${o.id.slice(0, 8).toUpperCase()}</p>
+        </div>
+        <span class="text-[10px] uppercase tracking-widest px-2 py-1 rounded font-semibold ${o.status === 'Delivered' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">${o.status}</span>
+      </div>
+      <div class="text-xs text-muted space-y-1">
+        ${(o.items || []).map(i => `<p>• ${i.name} × ${i.qty} — ${money(i.price * i.qty)}</p>`).join("")}
+      </div>
+      <p class="text-right font-display font-semibold text-base mt-2">${money(o.total)}</p>
+    </div>
+  `).join("");
+}
+
+$("#profileForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const { error } = await window.db.from("profiles").update({
+    full_name: $("#pName").value.trim(),
+    phone: $("#pPhone").value.trim(),
+    address: $("#pAddress").value.trim()
+  }).eq("id", currentUser.id);
+  
+  if (error) return toast("Error: " + error.message);
+  toast("Profile updated!");
+  $("#userName").textContent = $("#pName").value.trim() || "Friend";
+});
+
+$("#logoutBtn").addEventListener("click", async () => {
+  await window.db.auth.signOut();
+  window.location.href = "./index.html";
+});
+
+init();
+</script>
+</body>
+</html>
